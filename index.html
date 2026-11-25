@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#090d18"><title>Анатомия 3D — интерактивный атлас человека</title>
+<style>
+:root{--bg:#090d18;--panel:#111827;--panel2:#172235;--line:#26364d;--text:#edf4ff;--muted:#8fa3bd;--cyan:#55d9e8;--violet:#9b8cff;--gold:#ffc66d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#1a3150 0%,var(--bg) 58%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}.app{max-width:900px;margin:auto;padding:14px 14px 30px}.top{display:flex;align-items:center;justify-content:space-between;padding:7px 2px 14px}.brand{display:flex;gap:10px;align-items:center}.logo{width:39px;height:39px;border-radius:13px;background:linear-gradient(145deg,#53dce8,#7668e9);display:grid;place-items:center;color:#07111d;font-size:21px;font-weight:900;box-shadow:0 5px 22px #55d9e833}.brand h1{font-size:17px;letter-spacing:.08em;margin:0}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em;margin-top:2px}.pill{border:1px solid var(--line);background:#101a2a;color:#b8c9df;border-radius:30px;padding:8px 11px;font-size:11px}.intro{margin:3px 0 13px}.intro h2{font-size:22px;margin:0 0 4px}.intro p{margin:0;color:var(--muted);font-size:12px}.viewer{position:relative;height:min(54vh,490px);min-height:340px;border:1px solid #263951;border-radius:23px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#1b2b42 0%,#0d1625 56%,#09111d 100%);box-shadow:0 18px 50px #0005}.viewer canvas{display:block;width:100%;height:100%;touch-action:none}.viewtag{position:absolute;top:13px;left:13px;padding:7px 10px;border-radius:20px;background:#07111dcc;border:1px solid #38506a;color:#b9d5e9;font-size:10px;pointer-events:none}.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#9aacc2;font-size:10px;pointer-events:none}.viewerBtns{position:absolute;right:11px;top:12px;display:flex;flex-direction:column;gap:7px}.iconbtn{width:35px;height:35px;border-radius:12px;border:1px solid #344960;background:#101b2ccc;color:#d9e8fa;font-size:16px}.selected{position:absolute;left:12px;bottom:35px;max-width:70%;background:#0b1423e8;border:1px solid #35506a;border-radius:13px;padding:9px 12px;display:none;backdrop-filter:blur(8px)}.selected strong{display:block;font-size:13px}.selected span{font-size:11px;color:var(--cyan)}.toolbar{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}.tab{border:1px solid var(--line);border-radius:12px;background:#111b2b;color:#a9bad0;padding:10px 12px;font-size:12px;flex:1;min-width:100px}.tab.active{background:#163344;border-color:#327e8b;color:#8ef1f3}.search{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#101a29;color:var(--text);font-size:14px;outline:none}.search:focus{border-color:#4aa9ba}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:17px 2px 9px}.sectionhead h3{font-size:14px;margin:0}.sectionhead span{font-size:10px;color:var(--muted)}.systems{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.sys{display:flex;align-items:center;gap:9px;text-align:left;padding:11px;border:1px solid var(--line);background:#111a29;border-radius:13px;color:var(--text);min-height:55px}.sys.active{border-color:#4d8293;background:#132b39}.dot{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 12px currentColor}.sys b{display:block;font-size:11px;font-weight:650}.sys small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.catalog{display:grid;gap:7px}.organ{display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid #24344a;background:#101927;border-radius:13px;gap:10px}.organ.selectedRow{border-color:#4e9daa;background:#132b38}.organ b{font-size:12px}.organ small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.organ button{border:1px solid #34475e;background:#17263a;color:#cde2f5;border-radius:9px;padding:7px 9px;font-size:10px}.detail{margin-top:12px;padding:14px;border:1px solid #31455e;border-radius:16px;background:linear-gradient(135deg,#142337,#101827)}.detail h3{margin:0 0 3px;font-size:16px}.latin{color:var(--cyan);font-style:italic;font-size:12px}.detail p{color:#b6c6d9;font-size:12px;line-height:1.55;margin:9px 0 0}.foot{color:#71859e;font-size:10px;line-height:1.5;margin:18px 3px}.empty{color:var(--muted);font-size:12px;text-align:center;padding:20px}@media(min-width:700px){.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start}.viewer{height:590px}.right{padding-top:0}.systems{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><main class="app"><header class="top"><div class="brand"><div class="logo">✣</div><div><h1>ANATOMY 3D</h1><small>АНАТОМИЯ 3D · v2.0</small></div></div><div class="pill">РУССКИЙ ЯЗЫК</div></header><div class="intro"><h2>Анатомия человека</h2><p>Изучай органы и системы на интерактивной 3D-модели</p></div><div class="layout"><section><div class="viewer" id="viewer"><div class="viewtag">3D · МУЖСКОЕ ТЕЛО · ОБЗОР</div><div class="viewerBtns"><button class="iconbtn" id="reset" title="Вернуть исходный ракурс">↺</button><button class="iconbtn" id="zoomIn">＋</button><button class="iconbtn" id="zoomOut">－</button></div><div class="selected" id="floatInfo"></div><div class="hint">Проводи пальцем, чтобы вращать · своди два пальца, чтобы изменить масштаб</div></div><div class="toolbar" id="modelStudyModes" style="margin:10px 0">
+<button class="tab" data-model-study="muscle">Изучать мышцы</button>
+<button class="tab" data-model-study="bone">Изучать кости</button>
+<button class="tab active" data-model-study="all">Вернуть все слои</button>
+</div>
+<div class="detail" id="layerExplorer" style="margin:0 0 10px;padding:12px">
+<h3 style="font-size:13px">Послойное строение тела</h3>
+<p style="margin:5px 0 10px">Раздвигай условные анатомические слои, чтобы рассмотреть их расположение. Это учебная визуализация, а не хирургическая реконструкция.</p>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:#9fb3c9"><label for="layerSpread">Разделение слоёв</label><b id="layerSpreadValue">0%</b></div>
+<input id="layerSpread" type="range" min="0" max="100" value="0" step="1" style="width:100%;accent-color:#55d9e8">
+<div class="toolbar" style="margin:8px 0 0">
+<button class="tab" id="skinGhost">Сделать кожу прозрачной</button>
+<button class="tab" id="layerReset">Собрать слои</button>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#9fb3c9;margin-top:8px">
+<label><input type="checkbox" id="showSkinLayer" checked> Кожа</label>
+<label><input type="checkbox" id="showMuscleLayer" checked> Мышцы</label>
+<label><input type="checkbox" id="showBoneLayer" checked> Скелет</label>
+<label><input type="checkbox" id="showOrganLayer" checked> Органы</label>
+</div>
+</div>
+<div class="detail" style="margin:0 0 10px;padding:11px">
+<h3 style="font-size:12px">Режим изучения</h3>
+<p style="margin-top:5px">Выбери мышцы или скелет, чтобы временно скрыть остальные системы и рассмотреть доступные структуры. Нажми на элемент модели или выбери его в каталоге, чтобы открыть описание.</p>
+</div>
+<div class="cutaway" style="margin:10px 0;padding:12px;border:1px solid #26364d;border-radius:14px;background:#101a29"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b style="font-size:12px">Сечение модели</b><label style="font-size:11px;color:#9fb3c9"><input type="checkbox" id="cutToggle"> Включить</label></div><input id="cutSlider" type="range" min="-1.1" max="1.1" step="0.02" value="0" style="width:100%;margin-top:10px;accent-color:#55d9e8"><div style="font-size:10px;color:#8fa3bd">Перемещай ползунок, чтобы изменить положение сечения модели.</div></div>
+<div class="detail" style="margin:10px 0;padding:12px">
+<h3>Физиология</h3>
+<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#9fb3c9">
+<label><input type="checkbox" id="heartBeat" checked> Сердцебиение</label>
+<label><input type="checkbox" id="breathMotion" checked> Дыхательные движения</label>
+<label><input type="checkbox" id="bloodFlow" checked> Движение крови</label>
+<label><input type="checkbox" id="digestionMotion"> Перистальтика</label>
+<label><input type="checkbox" id="kidneyMotion"> Фильтрация почек</label>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#9fb3c9"><label for="heartRate">Частота пульса</label><b id="heartRateValue">72 уд/мин</b></div>
+<input id="heartRate" type="range" min="40" max="140" step="1" value="72" style="width:100%;accent-color:#55d9e8">
+<div style="font-size:10px;color:#8fa3bd">Учебная анимация сердца и лёгких; не измеряет реальные физиологические показатели.</div>
+</div>
+<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:11px;color:#9fb3c9">
+<label><input type="checkbox" id="labelsToggle" checked> Подписи на модели</label>
+<label><input type="checkbox" id="flowToggle" checked> Направление кровотока</label>
+</div><div class="toolbar"><button class="tab active" id="male">♂ Мужское тело</button><button class="tab" id="female">♀ Женское тело</button><button class="tab" id="front">Вид спереди</button><button class="tab" id="back">Вид сзади</button></div></section><section class="right"><input class="search" id="search" placeholder="⌕  Поиск по-русски: сердце, печень, лёгкие…" autocomplete="off"><div class="sectionhead"><h3>Слои тела</h3><span>Просмотр по слоям</span></div><div class="toolbar layerTools"><button class="tab active" data-layer="all">Все слои</button><button class="tab" data-layer="skin">Кожа</button><button class="tab" data-layer="muscle">Мышцы</button><button class="tab" data-layer="bone">Скелет</button><button class="tab" data-layer="inside">Органы</button></div><div class="sectionhead"><h3>Системы организма</h3><span>Кости, мышцы и органы</span></div>
+<div class="detail" style="margin-bottom:12px">
+<h3>Как пользоваться атласом</h3>
+<p>Выбери систему или слой, затем найди структуру через поиск. Нажми на строку каталога либо непосредственно на видимую геометрию. Кнопки «Вид спереди» и «Вид сзади» меняют ракурс, а ползунок сечения помогает исследовать внутренние области.</p>
+</div><div class="systems" id="systems"></div><div class="sectionhead"><h3 id="catalogTitle">Справочник анатомии</h3><span id="count"></span></div><div class="toolbar" id="studyFilters" style="margin-top:0">
+<button class="tab active" data-study="all">Все структуры</button>
+<button class="tab" data-study="muscles">Мышцы</button>
+<button class="tab" data-study="bones">Кости</button>
+</div>
+<div class="catalog" id="catalog"></div>
+<div class="detail" id="muscleLab" style="margin-top:12px">
+<h3>Атлас мышц · изучение по группам</h3>
+<p>Выбирай область и слой. У каждой мышцы можно отдельно включить или скрыть отображение, открыть карточку и изучить её функцию.</p>
+<div class="toolbar" id="muscleGroups">
+<button class="tab active" data-group="all">Все группы</button><button class="tab" data-group="chest">Грудь</button><button class="tab" data-group="back">Спина</button><button class="tab" data-group="arms">Руки</button><button class="tab" data-group="abdomen">Живот</button><button class="tab" data-group="legs">Ноги</button>
+</div>
+<div class="toolbar" id="muscleDepth"><button class="tab active" data-depth="all">Все слои</button><button class="tab" data-depth="superficial">Поверхностные</button><button class="tab" data-depth="deep">Глубокие</button></div>
+<input class="search" id="muscleSearch" placeholder="Поиск мышцы по-русски…" autocomplete="off">
+<div class="sectionhead"><h3>Мышцы в выбранной группе</h3><span id="muscleCount"></span></div>
+<div class="catalog" id="muscleCatalog"></div>
+<div class="detail" id="muscleCard"><h3>Карточка мышцы</h3><p>Нажми на название мышцы, чтобы увидеть расположение и функцию.</p></div>
+</div>
+<div class="detail" id="quizPanel" style="margin-top:12px">
+<h3>Проверка знаний · Русские названия</h3>
+<p>Отвечай по-русски: прочитай описание и выбери правильное название анатомической структуры.</p>
+<div id="quizProgress" style="font-size:11px;color:#8fa3bd;margin:8px 0">Вопросы об органах, костях и системах организма</div>
+<div id="quizQuestion" style="font-weight:700;margin:10px 0">Нажми «Начать проверку».</div>
+<div id="quizAnswers" style="display:grid;gap:8px"></div>
+<div id="quizFeedback" style="font-size:12px;margin-top:8px;min-height:18px"></div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="tab active" id="quizStart">Начать проверку</button>
+<button class="tab" id="quizNext" disabled>Следующий вопрос</button>
+</div>
+<div id="quizScore" style="font-size:12px;color:#9fb3c9;margin-top:8px">Правильных ответов: 0</div>
+</div>
+<div class="detail" id="detail"><h3>Выбери структуру</h3><div class="latin">Анатомическая структура не выбрана</div><p>Выбери структуру в каталоге или на 3D-модели, чтобы увидеть её русское название, латинский термин и описание.</p></div>
+<div class="detail" style="margin-top:12px">
+<h3>Путь крови · Circulatio sanguinis</h3>
+<div class="latin">Большой и малый круги кровообращения</div>
+<p><b>Малый круг:</b> правый желудочек → лёгочный ствол и лёгочные артерии → капилляры лёгких → лёгочные вены → левое предсердие.</p>
+<p><b>Большой круг:</b> левый желудочек → аорта → артерии органов и тканей → капилляры → вены → верхняя и нижняя полые вены → правое предсердие.</p>
+<p style="color:#8fa3bd;font-size:11px">Важно: лёгочные артерии несут венозную кровь, а лёгочные вены — артериальную.</p>
+</div>
+</section></div><p class="foot">Учебный демонстрационный атлас v2.0. Добавлены схематичные подструктуры сердца, мозга, лёгких, почек, печени, сосудов и нервной системы. Добавлен интерактивный плоскостной срез схематичной модели. Геометрия 3D-модели схематичная; послойное разделение условное и не предназначено для медицинской диагностики. Каталог содержит основные органы, крупные структуры и отдельный перечень 206 костей взрослого скелета. Ранее добавлены схематичные доли печени, элементы почечной лоханки, крупные сосудистые магистрали, ветви нервной системы, индикаторы направления кровотока и подписи на 3D-сцене. Геометрия остаётся учебной и схематичной; это не медицинская диагностическая модель. Мышечная геометрия схематична и не является послойной медицинской реконструкцией. Физиологические анимации условные и не моделируют реальные потоки, давление, газообмен или скорость фильтрации.</p></main>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+const systems=[['skin','Кожа и внешний покров','Наружная система','#9babb9'],['organs','Внутренние органы','Органы','#ff786e'],['skeletal','Скелет','Костная система','#e6d5ad'],['muscular','Мышцы','Мышечная система','#d66d79'],['circulatory','Кровеносная система','Сердце и сосуды','#e64f63'],['nervous','Нервная система','Головной мозг и нервы','#f3d16c'],['respiratory','Дыхательная система','Лёгкие и дыхательные пути','#64c9dc'],['digestive','Пищеварительная система','Органы пищеварения','#e8a85d'],['urinary','Мочевыделительная система','Почки и мочевые пути','#8c9cf5'],['reproductive','Репродуктивная система','Половые органы','#d18be8'],['endocrine','Эндокринная система','Железы внутренней секреции','#85c99b']];
+const organs=[
+['Atrium dextrum','Правое предсердие','circulatory','Верхняя правая камера сердца; принимает венозную кровь из полых вен.'],
+['Atrium sinistrum','Левое предсердие','circulatory','Верхняя левая камера сердца; получает насыщенную кислородом кровь из лёгочных вен.'],
+['Ventriculus dexter','Правый желудочек сердца','circulatory','Нижняя правая камера сердца; направляет кровь в лёгочный ствол.'],
+['Ventriculus sinister','Левый желудочек сердца','circulatory','Нижняя левая камера сердца; выталкивает кровь в аорту.'],
+['Valva tricuspidalis','Трёхстворчатый клапан','circulatory','Расположен между правым предсердием и правым желудочком.'],
+['Valva mitralis','Митральный клапан','circulatory','Расположен между левым предсердием и левым желудочком.'],
+['Valva aortae','Аортальный клапан','circulatory','Предотвращает обратный ток крови из аорты в левый желудочек.'],
+['Valva trunci pulmonalis','Клапан лёгочного ствола','circulatory','Предотвращает обратный ток крови из лёгочного ствола в правый желудочек.'],
+['Cortex cerebri','Кора больших полушарий','nervous','Наружный слой больших полушарий, участвующий в обработке сенсорной информации и высших функциях.'],
+['Lobus frontalis','Лобная доля','nervous','Участвует в планировании, произвольных движениях, речи и регуляции поведения.'],
+['Lobus parietalis','Теменная доля','nervous','Участвует в обработке соматосенсорной информации и пространственном восприятии.'],
+['Lobus temporalis','Височная доля','nervous','Участвует в слуховой обработке и формировании памяти.'],
+['Lobus occipitalis','Затылочная доля','nervous','Содержит основные корковые области обработки зрительной информации.'],
+['Cortex renalis','Корковое вещество почки','urinary','Наружная зона почки, где расположены почечные тельца и части канальцев.'],
+['Medulla renalis','Мозговое вещество почки','urinary','Внутренняя зона почки, включающая почечные пирамиды.'],
+['Lobus pulmonis superior','Верхняя доля лёгкого','respiratory','Верхний анатомический отдел лёгкого; справа и слева имеет особенности строения.'],
+['Lobus pulmonis inferior','Нижняя доля лёгкого','respiratory','Нижний анатомический отдел лёгкого.'],
+['Cerebrum','Головной мозг','nervous','Мозг управляет движениями, чувствами, памятью и другими функциями организма.'],['Cerebellum','Мозжечок','nervous','Участвует в координации движений и поддержании равновесия.'],['Medulla spinalis','Спинной мозг','nervous','Проводит нервные сигналы между головным мозгом и телом.'],['Cor','Сердце','circulatory','Мышечный орган, который перекачивает кровь по сосудам.'],['Aorta','Аорта','circulatory','Крупнейшая артерия, несущая кровь от сердца к органам.'],['Vena cava superior','Верхняя полая вена','circulatory','Возвращает кровь от верхней части тела к сердцу.'],['Pulmo dexter','Правое лёгкое','respiratory','Участвует в газообмене: поступлении кислорода и удалении углекислого газа.'],['Pulmo sinister','Левое лёгкое','respiratory','Участвует в газообмене и состоит из двух долей.'],['Trachea','Трахея','respiratory','Проводит воздух от гортани к бронхам.'],['Hepar','Печень','digestive','Участвует в обмене веществ, обезвреживании веществ и образовании желчи.'],['Ventriculus','Желудок','digestive','Перемешивает пищу и начинает её химическое переваривание.'],['Intestinum tenue','Тонкая кишка','digestive','Основное место переваривания пищи и всасывания питательных веществ.'],['Intestinum crassum','Толстая кишка','digestive','Всасывает воду и формирует каловые массы.'],['Pancreas','Поджелудочная железа','digestive','Вырабатывает пищеварительные ферменты и гормоны, включая инсулин.'],['Lien','Селезёнка','organs','Участвует в иммунной защите и фильтрации крови.'],['Ren dexter','Правая почка','urinary','Фильтрует кровь и участвует в образовании мочи.'],['Ren sinister','Левая почка','urinary','Фильтрует кровь и регулирует водно-солевой баланс.'],['Vesica urinaria','Мочевой пузырь','urinary','Накапливает мочу до её выведения.'],['Glandula thyroidea','Щитовидная железа','endocrine','Вырабатывает гормоны, регулирующие обмен веществ.'],['Glandula suprarenalis','Надпочечник','endocrine','Вырабатывает гормоны, участвующие в реакции на стресс и регуляции обмена.'],['Oculus','Глаз','nervous','Орган зрения, воспринимающий свет и формирующий зрительные сигналы.'],['Os frontale','Лобная кость','skeletal','Кость черепа, формирующая область лба.'],['Cranium','Череп','skeletal','Защищает головной мозг и формирует основу лицевого отдела головы.'],['Columna vertebralis','Позвоночный столб','skeletal','Поддерживает тело и защищает спинной мозг.'],['Sternum','Грудина','skeletal','Плоская кость передней стенки грудной клетки.'],['Costa','Рёбра','skeletal','Образуют грудную клетку и защищают органы грудной полости.'],['Clavicula','Ключица','skeletal','Соединяет верхнюю конечность с осевым скелетом.'],['Scapula','Лопатка','skeletal','Кость плечевого пояса, обеспечивающая подвижность плеча.'],['Humerus','Плечевая кость','skeletal','Длинная кость верхней части руки.'],['Radius','Лучевая кость','skeletal','Одна из двух костей предплечья.'],['Ulna','Локтевая кость','skeletal','Одна из двух костей предплечья.'],['Pelvis','Таз','skeletal','Костная структура, соединяющая туловище с нижними конечностями.'],['Femur','Бедренная кость','skeletal','Самая длинная и прочная кость тела.'],['Patella','Надколенник','skeletal','Защищает переднюю поверхность коленного сустава.'],['Tibia','Большеберцовая кость','skeletal','Основная опорная кость голени.'],['Fibula','Малоберцовая кость','skeletal','Тонкая кость голени, участвующая в стабилизации голеностопа.'],['Deltoideus','Дельтовидная мышца','muscular','Обеспечивает отведение руки и участвует в движениях плеча.'],['Pectoralis major','Большая грудная мышца','muscular','Участвует в движениях плеча и руки.'],['Biceps brachii','Двуглавая мышца плеча','muscular','Сгибает локоть и участвует в супинации предплечья.'],['Triceps brachii','Трёхглавая мышца плеча','muscular','Разгибает предплечье в локтевом суставе.'],['Rectus abdominis','Прямая мышца живота','muscular','Сгибает туловище и стабилизирует корпус.'],['Latissimus dorsi','Широчайшая мышца спины','muscular','Участвует в приведении и разгибании плеча.'],['Gluteus maximus','Большая ягодичная мышца','muscular','Разгибает бедро и стабилизирует таз.'],['Quadriceps femoris','Четырёхглавая мышца бедра','muscular','Разгибает голень в коленном суставе.'],['Gastrocnemius','Икроножная мышца','muscular','Участвует в подошвенном сгибании стопы.'],['Uterus','Матка','reproductive','Мышечный полый орган женской репродуктивной системы.'],['Ovarium','Яичник','reproductive','Парная железа, образующая яйцеклетки и половые гормоны.'],['Tuba uterina','Маточная труба','reproductive','Проводит яйцеклетку в направлении матки.'],['Prostata','Предстательная железа','reproductive','Железа мужской репродуктивной системы, участвующая в образовании семенной жидкости.'],['Testis','Яичко','reproductive','Парная половая железа, вырабатывающая сперматозоиды и тестостерон.']
+];
+
+organs.push(
+['Mandibula','Нижняя челюсть','skeletal','Участвует в жевании.'],['Clavicula','Ключица','skeletal','Соединяет грудину с лопаткой.'],['Scapula','Лопатка','skeletal','Кость плечевого пояса.'],['Sternum','Грудина','skeletal','Кость передней стенки грудной клетки.'],['Humerus','Плечевая кость','skeletal','Длинная кость плеча.'],['Radius','Лучевая кость','skeletal','Кость предплечья со стороны большого пальца.'],['Ulna','Локтевая кость','skeletal','Кость предплечья со стороны мизинца.'],['Femur','Бедренная кость','skeletal','Самая длинная кость тела.'],['Patella','Надколенник','skeletal','Кость коленного сустава.'],['Tibia','Большеберцовая кость','skeletal','Основная опорная кость голени.'],['Fibula','Малоберцовая кость','skeletal','Наружная кость голени.'],['Masseter','Жевательная мышца','muscular','Поднимает нижнюю челюсть.'],['Trapezius','Трапециевидная мышца','muscular','Двигает лопатку и шею.'],['Latissimus dorsi','Широчайшая мышца спины','muscular','Разгибает и приводит плечо.'],['Triceps brachii','Трёхглавая мышца плеча','muscular','Разгибает предплечье.'],['Gluteus maximus','Большая ягодичная мышца','muscular','Разгибает бедро.'],['Biceps femoris','Двуглавая мышца бедра','muscular','Сгибает колено.'],['Gastrocnemius','Икроножная мышца','muscular','Участвует в движении стопы.'],['Arteria carotis communis','Общая сонная артерия','circulatory','Несёт кровь к голове и шее.'],['Arteria brachialis','Плечевая артерия','circulatory','Кровоснабжает плечо и предплечье.'],['Arteria femoralis','Бедренная артерия','circulatory','Главная артерия бедра.'],['Vena jugularis','Яремная вена','circulatory','Отводит кровь от головы и шеи.'],['Vena femoralis','Бедренная вена','circulatory','Возвращает кровь от ноги.'],['Nervus opticus','Зрительный нерв','nervous','Передаёт зрительные сигналы.'],['Nervus vagus','Блуждающий нерв','nervous','Участвует в регуляции внутренних органов.'],['Plexus brachialis','Плечевое сплетение','nervous','Обеспечивает иннервацию верхней конечности.'],['Nervus ischiadicus','Седалищный нерв','nervous','Крупнейший нерв тела.'],['Bronchi principales','Главные бронхи','respiratory','Проводят воздух в лёгкие.'],['Diaphragma','Диафрагма','respiratory','Главная дыхательная мышца.'],['Duodenum','Двенадцатиперстная кишка','digestive','Начальный отдел тонкой кишки.'],['Appendix vermiformis','Червеобразный отросток','digestive','Отросток слепой кишки.'],['Ureter','Мочеточник','urinary','Проводит мочу в мочевой пузырь.'],['Hypophysis','Гипофиз','endocrine','Регулирует работу ряда эндокринных желёз.']
+);
+
+
+// v0.6 — register of the 206 bones of the standard adult skeleton.
+// These are individual catalogue records; the current 3D geometry remains schematic.
+const boneAtlas=[];
+function addBone(name,latin,description,paired=false){
+  if(paired){for(const side of ['dexter','sinister']){const ruSide=side==='dexter'?'правая':'левая';boneAtlas.push([latin+' '+side,name+' ('+ruSide+')','skeletal',description]);}}
+  else boneAtlas.push([latin,name,'skeletal',description]);
+}
+// Axial skeleton: 80
+[
+['Лобная кость','Os frontale','Формирует лоб и часть крыши глазниц.'],
+['Затылочная кость','Os occipitale','Формирует заднюю и нижнюю часть мозгового черепа.'],
+['Клиновидная кость','Os sphenoidale','Кость основания черепа, участвующая в формировании глазниц.'],
+['Решётчатая кость','Os ethmoidale','Участвует в формировании полости носа и медиальной стенки глазницы.'],
+].forEach(x=>addBone(...x));
+[['Теменная кость','Os parietale','Формирует верхнюю и боковые стенки черепа.',true],['Височная кость','Os temporale','Содержит структуры органа слуха и равновесия.',true],['Носовая кость','Os nasale','Формирует костную основу спинки носа.',true],['Слёзная кость','Os lacrimale','Небольшая кость медиальной стенки глазницы.',true],['Скуловая кость','Os zygomaticum','Формирует выступ щеки и часть стенки глазницы.',true],['Верхняя челюсть','Maxilla','Участвует в формировании верхней челюсти, нёба и глазницы.',true],['Нёбная кость','Os palatinum','Формирует заднюю часть твёрдого нёба.',true],['Нижняя носовая раковина','Concha nasalis inferior','Увеличивает площадь слизистой оболочки полости носа.',true],['Сошник','Vomer','Формирует часть костной перегородки носа.',false],['Нижняя челюсть','Mandibula','Подвижная кость лицевого черепа.',false]].forEach(x=>addBone(...x));
+[['Молоточек','Malleus','Слуховая косточка, передающая колебания барабанной перепонки.',true],['Наковальня','Incus','Передаёт колебания от молоточка к стремечку.',true],['Стремечко','Stapes','Передаёт колебания к овальному окну внутреннего уха.',true]].forEach(x=>addBone(...x));
+addBone('Подъязычная кость','Os hyoideum','Поддерживает язык и служит местом прикрепления мышц шеи.');
+// Vertebral column: 26 bones (24 vertebrae + sacrum + coccyx)
+for(let i=1;i<=7;i++)addBone('Шейный позвонок C'+i,'Vertebra cervicalis '+i,'Позвонок шейного отдела позвоночника.');
+for(let i=1;i<=12;i++)addBone('Грудной позвонок T'+i,'Vertebra thoracica '+i,'Позвонок грудного отдела позвоночника.');
+for(let i=1;i<=5;i++)addBone('Поясничный позвонок L'+i,'Vertebra lumbalis '+i,'Позвонок поясничного отдела позвоночника.');
+addBone('Крестец','Os sacrum','Сросшиеся крестцовые позвонки, соединяющие позвоночник с тазом.');addBone('Копчик','Os coccygis','Конечный отдел позвоночного столба из сросшихся копчиковых позвонков.');
+// Thoracic cage: 24 ribs + sternum
+for(let i=1;i<=12;i++)addBone('Ребро '+i+' (правое)','Costa '+i+' dextra','Участвует в формировании грудной клетки.',false);
+for(let i=1;i<=12;i++)addBone('Ребро '+i+' (левое)','Costa '+i+' sinistra','Участвует в формировании грудной клетки.',false);
+addBone('Грудина','Sternum','Плоская кость передней стенки грудной клетки.');
+// Appendicular skeleton: 126
+[['Ключица','Clavicula','Соединяет грудину с лопаткой.',true],['Лопатка','Scapula','Кость плечевого пояса, служит местом прикрепления мышц.',true],['Плечевая кость','Humerus','Длинная кость плеча.',true],['Лучевая кость','Radius','Кость предплечья со стороны большого пальца.',true],['Локтевая кость','Ulna','Кость предплечья со стороны мизинца.',true]].forEach(x=>addBone(...x));
+// 8 carpal bones in each wrist
+const carpals=[['Ладьевидная кость','Os scaphoideum'],['Полулунная кость','Os lunatum'],['Трёхгранная кость','Os triquetrum'],['Гороховидная кость','Os pisiforme'],['Кость-трапеция','Os trapezium'],['Трапециевидная кость','Os trapezoideum'],['Головчатая кость','Os capitatum'],['Крючковидная кость','Os hamatum']];
+carpals.forEach(x=>addBone(x[0],x[1],'Одна из восьми костей запястья.',true));
+for(let i=1;i<=5;i++)addBone('Пястная кость '+i,'Os metacarpale '+i,'Кость скелета кисти.',true);
+// 14 phalanges per hand (thumb has 2; other fingers 3)
+for(let finger=1;finger<=5;finger++){const n=finger===1?2:3;for(let ph=1;ph<=n;ph++)addBone('Фаланга '+ph+' пальца '+finger,'Phalanx '+ph+' digiti '+finger,'Кость пальца кисти.',true);}
+[['Тазовая кость','Os coxae','Образует боковую часть таза; состоит из подвздошной, седалищной и лобковой частей.',true],['Бедренная кость','Femur','Самая длинная кость тела.',true],['Надколенник','Patella','Сесамовидная кость передней поверхности коленного сустава.',true],['Большеберцовая кость','Tibia','Основная опорная кость голени.',true],['Малоберцовая кость','Fibula','Тонкая латеральная кость голени.',true]].forEach(x=>addBone(...x));
+const tarsals=[['Таранная кость','Talus'],['Пяточная кость','Calcaneus'],['Ладьевидная кость стопы','Os naviculare'],['Медиальная клиновидная кость','Os cuneiforme mediale'],['Промежуточная клиновидная кость','Os cuneiforme intermedium'],['Латеральная клиновидная кость','Os cuneiforme laterale'],['Кубовидная кость','Os cuboideum']];
+tarsals.forEach(x=>addBone(x[0],x[1],'Одна из костей предплюсны.',true));
+for(let i=1;i<=5;i++)addBone('Плюсневая кость '+i,'Os metatarsale '+i,'Кость скелета стопы.',true);
+for(let toe=1;toe<=5;toe++){const n=toe===1?2:3;for(let ph=1;ph<=n;ph++)addBone('Фаланга '+ph+' пальца стопы '+toe,'Phalanx '+ph+' digiti pedis '+toe,'Кость пальца стопы.',true);}
+
+const colors={organs:0xe96d68,skeletal:0xd9cba7,muscular:0xb95766,circulatory:0xe34e61,nervous:0xf2cf66,respiratory:0x55c5db,digestive:0xe7a45a,urinary:0x8295f4,reproductive:0xc783df,endocrine:0x77bf91};
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,-.15,10.2);const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.localClippingEnabled=true;renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;document.getElementById('viewer').prepend(renderer.domElement);const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.target.set(0,.1,0);controls.minDistance=4;controls.maxDistance=13;scene.add(new THREE.HemisphereLight(0xc8e7ff,0x273044,2));const light=new THREE.DirectionalLight(0xffffff,2.1);light.position.set(4,6,7);scene.add(light);const model=new THREE.Group();scene.add(model);const selectable={};
+function mat(c,rough=.48,trans=0){return new THREE.MeshStandardMaterial({color:c,roughness:rough,transparent:trans>0,opacity:1-trans,metalness:.03})}const skin=mat(0x9babb9,.65,.68),bone=mat(0xd9cba7),muscle=mat(0xb95766,.4,.08),organMat=c=>mat(c,.35,.04);
+function ell(name,pos,scale,material,system='organs'){const m=new THREE.Mesh(new THREE.SphereGeometry(1,24,18),material);m.position.set(...pos);m.scale.set(...scale);m.userData={name,system};model.add(m);selectable[name]=m;return m}function tube(points,r,material){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,32,r,8,false),material);model.add(mesh);return mesh}
+// translucent body silhouette
+ell('Body silhouette',[0,.15,0],[1.12,2.35,.55],skin,'skin');ell('Head silhouette',[0,2.85,0],[.53,.67,.48],skin,'skin');ell('Pelvis silhouette',[0,-1.75,0],[.78,.58,.48],skin,'skin');
+// skeletal landmarks
+const skel=bone;ell('Cranium', [0,2.83,.04],[.47,.55,.43],skel,'skeletal');tube([[0,2.25,.03],[0,1.75,.03],[0,1.2,.03],[0,.65,.03],[0,.1,.03],[0,-.55,.03],[0,-1.1,.03],[0,-1.55,.03]],.055,skel);for(let y of [1.55,1.28,1.01,.74,.47]){ell('Costa',[0,y,.1],[.77,.055,.27],skel,'skeletal')}ell('Pelvis',[0,-1.55,.05],[.72,.32,.25],skel,'skeletal');for(let s of [-1,1]){tube([[s*.35,1.85,0],[s*.72,1.65,0],[s*.94,1.2,0],[s*1.02,.65,0],[s*1.04,.15,0]],.075,skel);tube([[s*.42,-1.65,0],[s*.5,-2.1,0],[s*.58,-2.65,0],[s*.62,-3.1,0]],.095,skel);}
+// muscular layer hints
+for(let s of [-1,1]){ell('Deltoideus',[s*.83,1.65,.3],[.3,.42,.25],muscle,'muscular');ell('Biceps brachii',[s*.93,.95,.27],[.16,.43,.18],muscle,'muscular');ell('Quadriceps femoris',[s*.39,-2.3,.23],[.23,.58,.18],muscle,'muscular');}ell('Pectoralis major',[0,1.35,.39],[.67,.42,.2],muscle,'muscular');ell('Rectus abdominis',[0,.35,.38],[.35,.65,.15],muscle,'muscular');
+
+// Дополнительные структуры v0.3 — схематичные учебные ориентиры.
+function stube(name,pts,r,material,system){const c=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)));const m=new THREE.Mesh(new THREE.TubeGeometry(c,32,r,8,false),material);m.userData={name,system};model.add(m);selectable[name]=m;return m;}
+const bmat=mat(0xe5d8b8), mm=mat(0xa94d61,.45,.06), art=organMat(0xe34e61), ven=organMat(0x568fe0), nn=organMat(0xf1d36b);
+ell('Mandibula',[0,2.48,.12],[.36,.12,.28],bmat,'skeletal');ell('Sternum',[0,1.25,.22],[.12,.55,.09],bmat,'skeletal');
+for(const s of [-1,1]){
+ ell('Clavicula',[s*.48,1.78,.08],[.38,.055,.07],bmat,'skeletal');ell('Scapula',[s*.78,1.35,-.12],[.22,.38,.07],bmat,'skeletal');
+ stube('Humerus',[[s*.72,1.55,.02],[s*.86,1.15,.02],[s*.94,.78,.02]],.075,bmat,'skeletal');stube('Radius',[[s*.94,.72,.03],[s*1.02,.35,.03],[s*1.05,.02,.03]],.045,bmat,'skeletal');stube('Ulna',[[s*.9,.72,-.04],[s*.96,.35,-.04],[s*.98,.02,-.04]],.045,bmat,'skeletal');
+ stube('Femur',[[s*.36,-1.65,.02],[s*.42,-2.15,.02],[s*.48,-2.65,.02]],.105,bmat,'skeletal');ell('Patella',[s*.48,-2.67,.15],[.10,.13,.07],bmat,'skeletal');stube('Tibia',[[s*.48,-2.72,.02],[s*.51,-3.08,.02],[s*.53,-3.42,.02]],.065,bmat,'skeletal');stube('Fibula',[[s*.58,-2.75,-.02],[s*.62,-3.08,-.02],[s*.61,-3.4,-.02]],.035,bmat,'skeletal');
+ ell('Masseter',[s*.30,2.52,.35],[.12,.19,.13],mm,'muscular');ell('Trapezius',[s*.43,1.65,-.18],[.38,.42,.17],mm,'muscular');ell('Latissimus dorsi',[s*.48,.65,-.23],[.42,.75,.16],mm,'muscular');ell('Triceps brachii',[s*.91,.95,-.12],[.15,.42,.14],mm,'muscular');ell('Gluteus maximus',[s*.38,-1.65,-.22],[.34,.34,.16],mm,'muscular');ell('Biceps femoris',[s*.43,-2.25,-.13],[.17,.52,.13],mm,'muscular');ell('Gastrocnemius',[s*.53,-3.02,-.12],[.16,.32,.13],mm,'muscular');
+}
+
+// Детализация скелета v1.8: позвоночник, суставные ориентиры, кисти и стопы.
+// Геометрия учебная и упрощённая; парные структуры имеют отдельные подписи.
+const jointMat=mat(0xe9d9b8,.42);
+const spineNames=[
+ ['Шейный позвонок','Vertebra cervicalis',2.02],
+ ['Грудной позвонок','Vertebra thoracica',1.42],
+ ['Поясничный позвонок','Vertebra lumbalis',.35],
+ ['Крестец','Os sacrum',-1.12]
+];
+spineNames.forEach((v,i)=>{
+ const y=v[2], count=i===0?3:i===1?5:i===2?5:1;
+ for(let n=0;n<count;n++){
+  const yy=y-n*(i===0?.13:i===1?.16:i===2?.17:0);
+  ell(v[0]+' '+(n+1),[0,yy,.12],[.105,.065,.095],jointMat,'skeletal');
+ }
+});
+for(const s of [-1,1]){
+ const side=s===1?'правая':'левая';
+ // Суставные ориентиры
+ ell('Плечевой сустав — '+side,[s*.78,1.58,.09],[.14,.14,.13],jointMat,'skeletal');
+ ell('Локтевой сустав — '+side,[s*.95,.73,.06],[.105,.11,.10],jointMat,'skeletal');
+ ell('Лучезапястный сустав — '+side,[s*1.02,.02,.04],[.09,.10,.09],jointMat,'skeletal');
+ ell('Тазобедренный сустав — '+side,[s*.39,-1.67,.04],[.14,.15,.13],jointMat,'skeletal');
+ ell('Коленный сустав — '+side,[s*.48,-2.68,.06],[.13,.14,.12],jointMat,'skeletal');
+ ell('Голеностопный сустав — '+side,[s*.55,-3.42,.04],[.11,.12,.10],jointMat,'skeletal');
+
+ // Кости запястья и пясти в виде компактной группы небольших элементов.
+ for(let c=0;c<8;c++){
+  const x=s*(.99+(c%4)*.045), y=-.09-Math.floor(c/4)*.075;
+  ell('Кость запястья '+(c+1)+' — '+side,[x,y,.06],[.035,.04,.035],bmat,'skeletal');
+ }
+ for(let f=0;f<5;f++){
+  const x=s*(.99+(f-2)*.075);
+  const y=-.18-Math.abs(f-2)*.018;
+  stube('Пястная кость '+(f+1)+' — '+side,[[x,y,.06],[x+s*(f-2)*.012,y-.16,.06]],.022,bmat,'skeletal');
+  const segments=f===0?2:3;
+  for(let p=0;p<segments;p++){
+   const y1=y-.17-p*.075, y2=y1-.065;
+   stube('Фаланга '+(p+1)+' пальца '+(f+1)+' кисти — '+side,[[x+s*(f-2)*.012,y1,.06],[x+s*(f-2)*.018,y2,.06]],.014,bmat,'skeletal');
+  }
+ }
+ // Предплюсна, плюсна и пальцы стопы.
+ for(let t=0;t<7;t++){
+  ell('Кость предплюсны '+(t+1)+' — '+side,[s*(.56+(t%3)*.045),-3.48-Math.floor(t/3)*.045,.04],[.045,.045,.045],bmat,'skeletal');
+ }
+ for(let toe=0;toe<5;toe++){
+  const x=s*(.55+(toe-2)*.065);
+  stube('Плюсневая кость '+(toe+1)+' — '+side,[[x,-3.49,.05],[x+s*(toe-2)*.018,-3.67,.05]],.022,bmat,'skeletal');
+  const segs=toe===0?2:3;
+  for(let p=0;p<segs;p++){
+   const y=-3.68-p*.055;
+   stube('Фаланга '+(p+1)+' пальца стопы '+(toe+1)+' — '+side,[[x+s*(toe-2)*.018,y,.05],[x+s*(toe-2)*.023,y-.05,.05]],.013,bmat,'skeletal');
+  }
+ }
+}
+
+
+// Основные поверхностные группы мышц — учебная геометрическая схема v1.8.
+const muscleMat=mat(0xb85a69,.38,.04);
+const muscleDeep=mat(0x873e52,.42,.03);
+for(const s of [-1,1]){
+ const side=s===1?'правая':'левая';
+ // Плечевой пояс и верхняя конечность
+ ell('Дельтовидная мышца — '+side,[s*.76,1.57,.31],[.22,.28,.19],muscleMat,'muscular');
+ ell('Большая грудная мышца — '+side,[s*.29,1.32,.39],[.29,.27,.13],muscleMat,'muscular');
+ stube('Двуглавая мышца плеча — '+side,[[s*.75,1.42,.34],[s*.84,1.12,.32],[s*.91,.82,.27]],.085,muscleMat,'muscular');
+ stube('Трёхглавая мышца плеча — '+side,[[s*.79,1.43,.12],[s*.87,1.12,.14],[s*.92,.82,.18]],.075,muscleDeep,'muscular');
+ stube('Сгибатели предплечья — '+side,[[s*.93,.73,.25],[s*1.00,.40,.23],[s*1.04,.08,.19]],.065,muscleMat,'muscular');
+ stube('Разгибатели предплечья — '+side,[[s*.91,.73,-.02],[s*.97,.40,-.01],[s*1.00,.08,.02]],.055,muscleDeep,'muscular');
+
+ // Мышцы туловища
+ ell('Наружная косая мышца живота — '+side,[s*.27,.35,.37],[.20,.48,.11],muscleMat,'muscular');
+ ell('Прямая мышца живота — '+side,[s*.12,.42,.42],[.105,.52,.10],muscleDeep,'muscular');
+ ell('Трапециевидная мышца — '+side,[s*.30,1.65,-.24],[.28,.34,.10],muscleDeep,'muscular');
+ ell('Широчайшая мышца спины — '+side,[s*.48,.82,-.28],[.28,.58,.12],muscleMat,'muscular');
+ ell('Большая ягодичная мышца — '+side,[s*.37,-1.72,.30],[.29,.31,.15],muscleMat,'muscular');
+
+ // Мышцы нижней конечности
+ stube('Четырёхглавая мышца бедра — '+side,[[s*.39,-1.83,.28],[s*.44,-2.22,.30],[s*.48,-2.60,.27]],.14,muscleMat,'muscular');
+ stube('Задняя группа мышц бедра — '+side,[[s*.38,-1.85,-.18],[s*.44,-2.25,-.18],[s*.48,-2.60,-.12]],.105,muscleDeep,'muscular');
+ stube('Передняя большеберцовая мышца — '+side,[[s*.51,-2.76,.20],[s*.53,-3.08,.20],[s*.55,-3.39,.16]],.065,muscleMat,'muscular');
+ stube('Икроножная мышца — '+side,[[s*.54,-2.78,-.17],[s*.56,-3.05,-.20],[s*.56,-3.34,-.13]],.105,muscleMat,'muscular');
+ stube('Камбаловидная мышца — '+side,[[s*.55,-3.10,-.13],[s*.56,-3.32,-.10],[s*.56,-3.43,-.05]],.07,muscleDeep,'muscular');
+}
+
+
+// v2.0: расширенные группы мышц с отдельными поверхностными и глубокими объектами.
+const muscleCatalogData=[
+['Большая грудная мышца','Pectoralis major','chest','superficial','Грудная клетка, спереди; от ключицы, грудины и рёбер к плечевой кости.','Приводит и вращает плечо внутрь, участвует в сгибании руки.','Большая грудная мышца — правая'],
+['Малая грудная мышца','Pectoralis minor','chest','deep','Под большой грудной мышцей; от верхних рёбер к клювовидному отростку лопатки.','Тянет лопатку вперёд и вниз, помогает при форсированном вдохе.','Малая грудная мышца — правая'],
+['Передняя зубчатая мышца','Serratus anterior','chest','deep','Боковая поверхность грудной клетки, под мышкой; прикрепляется к медиальному краю лопатки.','Выдвигает лопатку вперёд и удерживает её у грудной стенки.','Передняя зубчатая мышца — правая'],
+['Трапециевидная мышца','Trapezius','back','superficial','Поверхностно на задней поверхности шеи и верхней части спины.','Поднимает, опускает и сводит лопатки; участвует в движениях головы.','Трапециевидная мышца — правая'],
+['Широчайшая мышца спины','Latissimus dorsi','back','superficial','Нижняя и боковая часть спины; направляется к плечевой кости.','Разгибает, приводит и вращает плечо внутрь.','Широчайшая мышца спины — правая'],
+['Ромбовидная мышца','Rhomboideus major','back','deep','Под трапециевидной мышцей, между позвоночником и медиальным краем лопатки.','Приводит лопатку к позвоночнику и стабилизирует её.','Ромбовидная мышца — правая'],
+['Мышца, выпрямляющая позвоночник','Erector spinae','back','deep','Глубокие продольные мышечные пучки вдоль позвоночника.','Разгибает позвоночник и поддерживает вертикальную позу.','Мышца, выпрямляющая позвоночник — правая'],
+['Дельтовидная мышца','Deltoideus','arms','superficial','Покрывает плечевой сустав.','Отводит плечо; передние и задние пучки участвуют в сгибании и разгибании.','Дельтовидная мышца — правая'],
+['Двуглавая мышца плеча','Biceps brachii','arms','superficial','Передняя поверхность плеча, от лопатки к лучевой кости.','Сгибает локоть и поворачивает предплечье ладонью вверх.','Двуглавая мышца плеча — правая'],
+['Плечевая мышца','Brachialis','arms','deep','Расположена глубже двуглавой мышцы на передней поверхности плечевой кости.','Один из основных сгибателей локтевого сустава.','Плечевая мышца — правая'],
+['Трёхглавая мышца плеча','Triceps brachii','arms','superficial','Задняя поверхность плеча; три головки сходятся к локтевому отростку.','Разгибает предплечье в локтевом суставе.','Трёхглавая мышца плеча — правая'],
+['Круглый пронатор','Pronator teres','arms','deep','Передняя поверхность предплечья, косо от медиального надмыщелка к лучевой кости.','Пронирует предплечье и помогает сгибать локоть.','Круглый пронатор — правая'],
+['Прямая мышца живота','Rectus abdominis','abdomen','superficial','Передняя стенка живота по обе стороны от белой линии.','Сгибает туловище и стабилизирует таз.','Прямая мышца живота — правая'],
+['Наружная косая мышца живота','Obliquus externus abdominis','abdomen','superficial','Самый поверхностный слой боковой стенки живота.','Сгибает и поворачивает туловище, повышает внутрибрюшное давление.','Наружная косая мышца живота — правая'],
+['Внутренняя косая мышца живота','Obliquus internus abdominis','abdomen','deep','Под наружной косой мышцей боковой стенки живота.','Участвует в повороте и боковом сгибании туловища.','Внутренняя косая мышца живота — правая'],
+['Поперечная мышца живота','Transversus abdominis','abdomen','deep','Самый глубокий широкий слой боковой стенки живота.','Сдавливает брюшную полость и стабилизирует пояснично-тазовую область.','Поперечная мышца живота — правая'],
+['Большая ягодичная мышца','Gluteus maximus','legs','superficial','Поверхностно в ягодичной области.','Разгибает и вращает бедро наружу, помогает вставать и подниматься по лестнице.','Большая ягодичная мышца — правая'],
+['Средняя ягодичная мышца','Gluteus medius','legs','deep','Под большой ягодичной мышцей, на наружной поверхности таза.','Отводит бедро и стабилизирует таз при ходьбе.','Средняя ягодичная мышца — правая'],
+['Прямая мышца бедра','Rectus femoris','legs','superficial','Передняя поверхность бедра, часть четырёхглавой мышцы.','Разгибает колено и сгибает бедро.','Прямая мышца бедра — правая'],
+['Широкая латеральная мышца','Vastus lateralis','legs','superficial','Наружная часть передней поверхности бедра.','Разгибает голень в коленном суставе.','Широкая латеральная мышца — правая'],
+['Широкая медиальная мышца','Vastus medialis','legs','superficial','Внутренняя часть передней поверхности бедра, рядом с коленом.','Разгибает колено и помогает стабилизировать надколенник.','Широкая медиальная мышца — правая'],
+['Двуглавая мышца бедра','Biceps femoris','legs','superficial','Задняя поверхность бедра, латеральная часть группы задних мышц.','Сгибает колено и разгибает бедро длинной головкой.','Задняя группа мышц бедра — правая'],
+['Полусухожильная мышца','Semitendinosus','legs','deep','Заднемедиальная поверхность бедра.','Разгибает бедро, сгибает колено и вращает голень внутрь.','Полусухожильная мышца — правая'],
+['Передняя большеберцовая мышца','Tibialis anterior','legs','superficial','Передняя поверхность голени, вдоль большеберцовой кости.','Поднимает внутренний край стопы и тыльно сгибает её.','Передняя большеберцовая мышца — правая'],
+['Икроножная мышца','Gastrocnemius','legs','superficial','Поверхностная задняя часть голени; имеет две головки.','Подошвенно сгибает стопу и помогает сгибать колено.','Икроножная мышца — правая'],
+['Камбаловидная мышца','Soleus','legs','deep','Глубже икроножной мышцы на задней поверхности голени.','Подошвенно сгибает стопу и поддерживает позу стоя.','Камбаловидная мышца — правая']
+];
+const muscleMeshByName={};
+function muscleMesh(name,side,group,depth,pts,r,material){
+ const nm=name+' — '+side;
+ if(selectable[nm])selectable[nm].visible=false;
+ const mesh=stube(nm,pts.map(p=>[p[0]*side,p[1],p[2]]),r,material,'muscular');
+ mesh.userData.muscleGroup=group;mesh.userData.muscleDepth=depth;mesh.userData.individualHidden=false;
+ muscleMeshByName[nm]=mesh;return mesh;
+}
+const mSuper=mat(0xc45b70,.42,.04),mDeep=mat(0x88445d,.45,.03);
+const musclePaths={
+ 'Большая грудная мышца':[[[.12,1.52,.42],[.36,1.39,.46],[.68,1.19,.34]]],
+ 'Малая грудная мышца':[[[.18,1.48,.28],[.38,1.34,.28],[.57,1.22,.22]]],
+ 'Передняя зубчатая мышца':[[[.55,1.14,.20],[.64,.91,.24],[.56,.67,.23]]],
+ 'Трапециевидная мышца':[[[.08,1.94,-.24],[.32,1.70,-.32],[.57,1.42,-.25]]],
+ 'Широчайшая мышца спины':[[[.56,1.22,-.24],[.48,.88,-.34],[.30,.48,-.28]]],
+ 'Ромбовидная мышца':[[[.12,1.56,-.22],[.34,1.44,-.30],[.48,1.27,-.24]]],
+ 'Мышца, выпрямляющая позвоночник':[[[.13,1.38,-.23],[.16,.76,-.25],[.17,.15,-.20]]],
+ 'Дельтовидная мышца':[[[.58,1.70,.16],[.78,1.52,.34],[.90,1.29,.20]]],
+ 'Двуглавая мышца плеча':[[[.72,1.42,.34],[.82,1.10,.34],[.91,.82,.28]]],
+ 'Плечевая мышца':[[[.78,1.18,.25],[.87,.98,.29],[.91,.80,.25]]],
+ 'Трёхглавая мышца плеча':[[[.75,1.43,-.12],[.84,1.10,-.16],[.92,.81,-.08]]],
+ 'Круглый пронатор':[[[.92,.76,.20],[.98,.55,.20],[1.02,.35,.12]]],
+ 'Прямая мышца живота':[[[.06,.88,.40],[.08,.42,.42],[.10,-.04,.36]]],
+ 'Наружная косая мышца живота':[[[.28,.82,.34],[.38,.40,.33],[.30,.02,.28]]],
+ 'Внутренняя косая мышца живота':[[[.22,.75,.24],[.30,.39,.24],[.24,.08,.22]]],
+ 'Поперечная мышца живота':[[[.12,.72,.20],[.20,.38,.20],[.14,.10,.19]]],
+ 'Большая ягодичная мышца':[[[.20,-1.55,.28],[.39,-1.78,.34],[.57,-1.96,.24]]],
+ 'Средняя ягодичная мышца':[[[.22,-1.42,.20],[.40,-1.57,.25],[.54,-1.75,.18]]],
+ 'Прямая мышца бедра':[[[.34,-1.86,.27],[.42,-2.23,.31],[.48,-2.59,.26]]],
+ 'Широкая латеральная мышца':[[[.49,-1.90,.18],[.58,-2.24,.19],[.56,-2.59,.18]]],
+ 'Широкая медиальная мышца':[[[.28,-2.04,.20],[.38,-2.36,.24],[.45,-2.60,.25]]],
+ 'Двуглавая мышца бедра':[[[.36,-1.85,-.14],[.44,-2.22,-.19],[.49,-2.59,-.12]]],
+ 'Полусухожильная мышца':[[[.28,-1.86,-.15],[.36,-2.20,-.20],[.43,-2.58,-.12]]],
+ 'Передняя большеберцовая мышца':[[[.50,-2.73,.19],[.53,-3.08,.20],[.55,-3.38,.15]]],
+ 'Икроножная мышца':[[[.44,-2.76,-.16],[.54,-3.02,-.22],[.56,-3.35,-.12]]],
+ 'Камбаловидная мышца':[[[.46,-2.96,-.10],[.54,-3.20,-.16],[.56,-3.42,-.08]]]
+};
+for(const item of muscleCatalogData){const [ru,la,group,depth,location,fn,legacy]=item;for(const side of [1,-1]){const sideName=side===1?'правая':'левая';const meshName=ru+' — '+sideName;const pts=(musclePaths[ru]||[])[0];if(pts)muscleMesh(ru,side,group,depth,pts,group==='chest'?.075:group==='legs'?.065:.055,depth==='deep'?mDeep:mSuper);}}
+
+stube('Arteria carotis communis',[[0,1, .55],[0,1.55,.5],[0,2.1,.38],[0,2.45,.28]],.035,art,'circulatory');stube('Arteria brachialis',[[.72,1.58,.2],[.88,1.1,.15],[.98,.68,.12]],.027,art,'circulatory');stube('Arteria femoralis',[[.42,-1.58,.18],[.46,-2.1,.16],[.5,-2.65,.12]],.03,art,'circulatory');stube('Vena jugularis',[[-.12,2.35,.22],[-.18,1.8,.28],[-.2,1.15,.38]],.03,ven,'circulatory');stube('Vena femoralis',[[-.42,-1.6,.12],[-.48,-2.1,.1],[-.5,-2.65,.1]],.035,ven,'circulatory');
+stube('Nervus opticus',[[0,2.85,.42],[.12,2.82,.3],[.2,2.78,.22]],.025,nn,'nervous');stube('Nervus vagus',[[.12,1.85,.3],[.18,1.25,.34],[.2,.65,.3],[.25,.1,.28]],.022,nn,'nervous');stube('Plexus brachialis',[[.12,1.78,.25],[.4,1.65,.2],[.7,1.45,.12],[.9,1.2,.1]],.025,nn,'nervous');stube('Nervus ischiadicus',[[.35,-1.65,-.05],[.48,-2,-.05],[.52,-2.5,-.04],[.55,-2.9,-.04]],.035,nn,'nervous');
+stube('Bronchi principales',[[0,1.4,.48],[.18,1.3,.45],[.38,1.18,.42]],.045,organMat(colors.respiratory),'respiratory');stube('Bronchi principales',[[0,1.4,.48],[-.18,1.3,.45],[-.38,1.18,.42]],.045,organMat(colors.respiratory),'respiratory');ell('Diaphragma',[0,.65,.18],[.72,.12,.3],organMat(colors.respiratory),'respiratory');ell('Duodenum',[.1,-.15,.48],[.22,.16,.14],organMat(colors.digestive),'digestive');ell('Appendix vermiformis',[.42,-.65,.48],[.06,.17,.06],organMat(colors.digestive),'digestive');stube('Ureter',[[.57,-.35,.2],[.42,-.72,.28],[.12,-1.08,.35]],.025,organMat(colors.urinary),'urinary');ell('Hypophysis',[0,2.55,.42],[.09,.07,.08],organMat(colors.endocrine),'endocrine');
+
+// thoracic organs
+ell('Cerebrum',[0,2.85,.48],[.38,.43,.22],organMat(colors.nervous),'nervous');ell('Cor',[-.12,.92,.52],[.25,.36,.2],organMat(colors.circulatory),'circulatory');ell('Pulmo dexter',[.42,1.12,.43],[.34,.62,.2],organMat(colors.respiratory),'respiratory');ell('Pulmo sinister',[-.48,1.12,.43],[.31,.62,.2],organMat(colors.respiratory),'respiratory');tube([[0,1.85,.48],[0,1.55,.48],[0,1.35,.48]],.055,organMat(colors.respiratory));ell('Hepar',[.43,.15,.47],[.48,.3,.22],organMat(colors.digestive),'digestive');ell('Ventriculus',[-.35,.1,.49],[.29,.34,.2],organMat(colors.digestive),'digestive');ell('Intestinum tenue',[0,-.48,.48],[.48,.38,.2],organMat(colors.digestive),'digestive');ell('Ren dexter',[.57,-.35,.2],[.18,.27,.14],organMat(colors.urinary),'urinary');ell('Ren sinister',[-.57,-.35,.2],[.18,.27,.14],organMat(colors.urinary),'urinary');ell('Pancreas',[0,-.02,.5],[.36,.1,.12],organMat(colors.digestive),'digestive');ell('Vesica urinaria',[0,-1.18,.42],[.2,.24,.16],organMat(colors.urinary),'urinary');
+// vessels
+const blood=organMat(colors.circulatory);tube([[0,1.1,.62],[0,.7,.62],[0,.1,.58],[0,-.8,.5],[0,-1.5,.25]],.035,blood);tube([[0,.7,.62],[.35,.45,.55],[.5,-.2,.42]],.022,blood);tube([[0,.7,.62],[-.35,.45,.55],[-.5,-.2,.42]],.022,blood);
+// endocrine/reproductive markers
+ell('Glandula thyroidea',[0,1.9,.49],[.19,.12,.1],organMat(colors.endocrine),'endocrine');const uterus=ell('Uterus',[0,-1.6,.42],[.22,.28,.13],organMat(colors.reproductive),'reproductive');uterus.userData.gender='female';const prostate=ell('Prostata',[0,-1.05,.48],[.15,.12,.1],organMat(colors.reproductive),'reproductive');prostate.userData.gender='male';const testisL=ell('Testis',[.2,-1.92,.4],[.09,.14,.09],organMat(colors.reproductive),'reproductive');testisL.userData.gender='male';const testisR=ell('Testis',[ -.2,-1.92,.4],[.09,.14,.09],organMat(colors.reproductive),'reproductive');testisR.userData.gender='male';const ovaryL=ell('Ovarium',[-.34,-1.55,.42],[.11,.13,.1],organMat(colors.reproductive),'reproductive');ovaryL.userData.gender='female';const ovaryR=ell('Ovarium',[.34,-1.55,.42],[.11,.13,.1],organMat(colors.reproductive),'reproductive');ovaryR.userData.gender='female';const tubeL=ell('Tuba uterina',[-.27,-1.39,.42],[.2,.045,.045],organMat(colors.reproductive),'reproductive');tubeL.userData.gender='female';const tubeR=ell('Tuba uterina',[.27,-1.39,.42],[.2,.045,.045],organMat(colors.reproductive),'reproductive');tubeR.userData.gender='female';
+// v0.8: схематичные учебные подструктуры сердца, мозга, лёгких и почек.
+// Они предназначены для знакомства с расположением, а не для клинической оценки.
+const chamberMat=organMat(0xc94d63), chamberLight=organMat(0xe27b83), valveMat=organMat(0xe7bd73);
+const sub=(name,pos,scale,material,system)=>ell(name,pos,scale,material,system);
+sub('Atrium dextrum',[-.22,1.02,.73],[.13,.15,.12],chamberLight,'circulatory');
+sub('Atrium sinistrum',[.02,1.04,.74],[.13,.15,.12],chamberLight,'circulatory');
+sub('Ventriculus dexter',[-.23,.78,.73],[.14,.22,.13],chamberMat,'circulatory');
+sub('Ventriculus sinister',[.04,.77,.74],[.15,.24,.14],chamberMat,'circulatory');
+sub('Valva tricuspidalis',[-.22,.91,.86],[.08,.035,.025],valveMat,'circulatory');
+sub('Valva mitralis',[.02,.91,.87],[.08,.035,.025],valveMat,'circulatory');
+sub('Valva aortae',[.02,1.12,.82],[.055,.035,.025],valveMat,'circulatory');
+sub('Valva trunci pulmonalis',[-.18,1.12,.82],[.055,.035,.025],valveMat,'circulatory');
+const brainMat=organMat(0xd6a0a7);
+sub('Lobus frontalis',[0,2.99,.66],[.24,.20,.10],brainMat,'nervous');
+sub('Lobus parietalis',[0,2.82,.66],[.24,.14,.10],organMat(0xc68caa),'nervous');
+sub('Lobus temporalis',[.22,2.78,.62],[.13,.16,.09],organMat(0xb98cb9),'nervous');
+sub('Lobus occipitalis',[0,2.69,.60],[.17,.10,.08],organMat(0x9d9bd0),'nervous');
+sub('Cortex cerebri',[0,2.83,.72],[.30,.29,.045],organMat(0xe6b5b8,.45,.3),'nervous');
+const lungPart=organMat(0x75aebd);
+sub('Lobus pulmonis superior',[.42,1.34,.65],[.22,.25,.07],lungPart,'respiratory');
+sub('Lobus pulmonis inferior',[.42,.94,.65],[.23,.28,.07],organMat(0x5c96aa),'respiratory');
+const kidneyPart=organMat(0x9b6a78);
+sub('Cortex renalis',[.57,-.25,.36],[.17,.22,.07],organMat(0xc58a91),'urinary');
+
+sub('Medulla renalis',[.57,-.35,.43],[.105,.15,.055],kidneyPart,'urinary');
+
+// v1.0 — expanded teaching geometry: liver lobes, renal pelvis, vessels and nerves.
+// These are schematic landmarks, not patient-specific or diagnostic anatomy.
+const liverMat=organMat(0x8d5547), renalPelvisMat=organMat(0xe8c6a2);
+sub('Lobus hepatis dexter',[.34,.08,.48],[.34,.24,.14],liverMat,'digestive');
+sub('Lobus hepatis sinister',[-.12,.12,.49],[.22,.18,.13],organMat(0xa96853),'digestive');
+sub('Vesica fellea',[.42,-.18,.55],[.07,.15,.06],organMat(0x7eaa70),'digestive');
+sub('Pelvis renalis',[.57,-.35,.50],[.07,.10,.045],renalPelvisMat,'urinary');
+sub('Calyces renales',[.57,-.35,.54],[.12,.045,.025],renalPelvisMat,'urinary');
+
+// Renal arterial and venous branches, bilaterally
+const arteryMat=organMat(0xe34e61), veinMat=organMat(0x568fe0), nerveMat=organMat(0xf1d36b);
+for(const s of [-1,1]){
+  stube('Arteria renalis',[[0,-.45,.35],[s*.28,-.43,.40],[s*.48,-.34,.42],[s*.56,-.30,.43]],.026,arteryMat,'circulatory');
+  stube('Vena renalis',[[s*.56,-.42,.36],[s*.38,-.49,.38],[s*.18,-.48,.40],[0,-.45,.40]],.03,veinMat,'circulatory');
+  stube('Arteria segmentalis renis',[[s*.55,-.30,.43],[s*.62,-.25,.46],[s*.65,-.18,.45]],.014,arteryMat,'circulatory');
+  stube('Nervi intercostales',[[s*.08,1.55,-.12],[s*.35,1.48,-.15],[s*.62,1.4,-.12]],.012,nerveMat,'nervous');
+}
+// Great vessels and pulmonary circuit; direction markers are added as small cones.
+stube('Truncus pulmonalis',[[0,.78,.78],[-.16,1.0,.72],[-.22,1.25,.68]],.055,organMat(0x568fe0),'circulatory');
+stube('Aorta ascendens',[[.10,.78,.79],[.12,1.02,.78],[.08,1.28,.73]],.06,arteryMat,'circulatory');
+stube('Arcus aortae',[[.08,1.28,.73],[.02,1.43,.68],[-.24,1.42,.62],[-.38,1.30,.58]],.052,arteryMat,'circulatory');
+stube('Aorta thoracica',[[.08,1.28,.73],[.10,.90,.65],[.10,.42,.58],[.08,-.15,.50]],.05,arteryMat,'circulatory');
+stube('Aorta abdominalis',[[.08,-.15,.50],[.06,-.55,.43],[0,-1.12,.34]],.045,arteryMat,'circulatory');
+stube('Vena cava superior',[[.35,1.52,.52],[.32,1.18,.58],[.25,.86,.64]],.05,veinMat,'circulatory');
+stube('Vena cava inferior',[[.0,-1.18,.34],[.06,-.62,.42],[.12,-.12,.5],[.25,.60,.62]],.05,veinMat,'circulatory');
+stube('Venae pulmonales',[[.18,1.02,.74],[.34,1.10,.70],[.48,1.18,.66]],.027,veinMat,'circulatory');
+stube('Arteria pulmonalis dextra',[[ -.20,1.25,.68],[.12,1.34,.66],[.38,1.30,.62]],.03,veinMat,'circulatory');
+stube('Arteria pulmonalis sinistra',[[-.20,1.25,.68],[-.38,1.30,.62],[-.48,1.25,.60]],.03,veinMat,'circulatory');
+
+// Spinal cord, brainstem and major peripheral nerve pathways
+stube('Medulla spinalis',[[0,2.48,-.08],[0,2.10,-.08],[0,1.65,-.08],[0,1.15,-.08],[0,.65,-.08],[0,.15,-.08],[0,-.35,-.08]],.055,nerveMat,'nervous');
+stube('Truncus encephali',[[0,2.72,.42],[0,2.55,.42],[0,2.38,.36]],.07,nerveMat,'nervous');
+stube('Nervus medianus',[[.82,1.40,.14],[.92,.98,.14],[1.0,.52,.12],[1.02,.12,.12]],.018,nerveMat,'nervous');
+stube('Nervus ulnaris',[[.88,1.38,.10],[.94,.92,.10],[.98,.48,.10],[.99,.10,.10]],.016,nerveMat,'nervous');
+stube('Nervus femoralis',[[.25,-1.35,.18],[.38,-1.65,.14],[.44,-2.0,.12]],.022,nerveMat,'nervous');
+
+// Small directional cones along the main systemic and pulmonary blood paths
+const flowObjects=[];
+function flowArrow(pos,dir,color=0xffd166){
+  const m=new THREE.Mesh(new THREE.ConeGeometry(.045,.14,10),new THREE.MeshBasicMaterial({color}));
+  m.position.set(...pos);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(...dir).normalize());
+  m.userData={name:'Flow marker',system:'circulatory',flowMarker:true};model.add(m);flowObjects.push(m);return m;
+}
+flowArrow([.12,1.02,.79],[0,1,0],0xff9a9a);
+flowArrow([.08,.30,.53],[0,-1,0],0xff9a9a);
+flowArrow([-.20,1.22,.69],[-1,0,0],0x8dc7ff);
+flowArrow([.34,1.14,.69],[1,0,0],0x8dc7ff);
+
+
+// v1.2 — animated teaching markers for circulation, peristalsis and renal filtration.
+const bloodFlowToggle=document.getElementById('bloodFlow');
+const digestionToggle=document.getElementById('digestionMotion');
+const kidneyToggle=document.getElementById('kidneyMotion');
+const bloodCurves=[
+ new THREE.CatmullRomCurve3([[.10,.78,.79],[.12,1.02,.78],[.08,1.28,.73],[.08,.9,.65],[.08,.3,.53],[.08,-.15,.5],[.06,-.55,.43],[0,-1.12,.34]].map(p=>new THREE.Vector3(...p))),
+ new THREE.CatmullRomCurve3([[0,.78,.79],[-.16,1.0,.72],[-.22,1.25,.68],[-.38,1.30,.58]].map(p=>new THREE.Vector3(...p))),
+ new THREE.CatmullRomCurve3([[.18,1.02,.74],[.34,1.10,.70],[.48,1.18,.66]].map(p=>new THREE.Vector3(...p)))
+];
+const bloodParticles=[];
+for(let i=0;i<15;i++){
+ const color=i%3===0?0x7fc8ff:0xff7887;
+ const mesh=new THREE.Mesh(new THREE.SphereGeometry(.025,10,8),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.95}));
+ mesh.userData={system:'circulatory',flowParticle:true};model.add(mesh);
+ bloodParticles.push({mesh,path:i%3,offset:i/15});
+}
+const diaphragmMesh=selectable['Diaphragma'],duodenumMesh=selectable['Duodenum'];
+const kidneyMeshes=Object.entries(selectable).filter(([n])=>n==='Ren dexter'||n==='Ren sinister'||n.toLowerCase().includes('ren'));
+const diaphragmBase=diaphragmMesh?.position.clone(),duodenumBase=duodenumMesh?.scale.clone();
+const kidneyBases=kidneyMeshes.map(([n,o])=>[o,o.scale.clone()]);
+
+// Direct 3D labels: lightweight canvas sprites, toggled independently from anatomy layers.
+const labelObjects=[];
+function addLabel(text,pos){
+  const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='rgba(7,15,27,.82)';ctx.strokeStyle='rgba(85,217,232,.9)';ctx.lineWidth=5;
+  ctx.beginPath();ctx.roundRect(8,8,496,112,22);ctx.fill();ctx.stroke();
+  ctx.font='bold 34px Arial';ctx.fillStyle='#f2f7ff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64,460);
+  const tex=new THREE.CanvasTexture(canvas);tex.colorSpace=THREE.SRGBColorSpace;
+  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:false}));
+  sprite.position.set(...pos);sprite.scale.set(.88,.22,1);sprite.userData={system:'labels',label:true};
+  model.add(sprite);labelObjects.push(sprite);
+}
+addLabel('COR · СЕРДЦЕ',[.65,.92,.95]);
+addLabel('ENCEPHALON · МОЗГ',[.62,2.95,.78]);
+addLabel('HEPAR · ПЕЧЕНЬ',[.72,.08,.72]);
+addLabel('REN · ПОЧКА',[.82,-.38,.62]);
+addLabel('AORTA',[.55,.48,.76]);
+addLabel('MEDULLA SPINALIS',[.58,1.95,.08]);
+
+
+// v0.7: интерактивный плоскостной срез модели. Это учебный визуальный срез,
+// а не анатомически сегментированная КТ/МРТ-модель.
+const sectionPlane=new THREE.Plane(new THREE.Vector3(1,0,0),0);
+function setSection(enabled,value){sectionPlane.constant=Number(value);model.traverse(o=>{if(!o.isMesh)return;const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>{m.clippingPlanes=enabled?[sectionPlane]:[];m.needsUpdate=true})})}
+const cutToggle=document.getElementById('cutToggle'),cutSlider=document.getElementById('cutSlider');
+cutToggle.addEventListener('change',()=>setSection(cutToggle.checked,cutSlider.value));
+cutSlider.addEventListener('input',()=>{if(cutToggle.checked)setSection(true,cutSlider.value)});
+let active=new Set(['skin','organs','skeletal','muscular','circulatory','nervous','respiratory','digestive','urinary','reproductive','endocrine']);let selected=null;let female=false;function applyGender(){model.children.forEach(o=>{if(o.userData?.gender)o.visible=(o.userData.gender==='female')===female && active.has(o.userData.system)});document.querySelector('.viewtag').textContent='3D · '+(female?'ЖЕНСКАЯ':'МУЖСКАЯ')+' МОДЕЛЬ · ОБЗОР'}applyGender();
+const labelsToggle=document.getElementById('labelsToggle'),flowToggle=document.getElementById('flowToggle');
+labelsToggle.addEventListener('change',()=>labelObjects.forEach(o=>o.visible=labelsToggle.checked));
+flowToggle.addEventListener('change',()=>flowObjects.forEach(o=>o.visible=flowToggle.checked));
+
+const heartBeatToggle=document.getElementById('heartBeat');
+const breathMotionToggle=document.getElementById('breathMotion');
+const heartRateSlider=document.getElementById('heartRate');
+const heartRateValue=document.getElementById('heartRateValue');
+heartRateSlider.addEventListener('input',()=>heartRateValue.textContent=heartRateSlider.value+' уд/мин');
+const heartMesh=selectable['Cor'];
+const rightLung=selectable['Pulmo dexter'],leftLung=selectable['Pulmo sinister'];
+const baseScales=[heartMesh?.scale.clone(),rightLung?.scale.clone(),leftLung?.scale.clone()];
+const clock=new THREE.Clock();
+function resize(){const v=document.getElementById('viewer');const w=v.clientWidth,h=v.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false)}new ResizeObserver(resize).observe(document.getElementById('viewer'));resize();function animate(){
+requestAnimationFrame(animate);
+const t=clock.getElapsedTime();
+const bpm=Number(heartRateSlider.value)||72;
+if(heartMesh&&baseScales[0]){
+ const phase=(t*bpm/60)%1;
+ const pulse=heartBeatToggle.checked?1+0.11*Math.exp(-Math.pow((phase-.12)/.075,2)):1;
+ heartMesh.scale.copy(baseScales[0]).multiplyScalar(pulse);
+}
+if(rightLung&&leftLung&&baseScales[1]&&baseScales[2]){
+ const breath=breathMotionToggle.checked?1+0.035*(.5-.5*Math.cos(t*2*Math.PI/4)):1;
+ rightLung.scale.copy(baseScales[1]).multiplyScalar(breath);
+ leftLung.scale.copy(baseScales[2]).multiplyScalar(breath);
+}
+if(diaphragmMesh&&diaphragmBase){
+ const breathPhase=breathMotionToggle.checked?Math.sin(t*2*Math.PI/4):0;
+ diaphragmMesh.position.copy(diaphragmBase);diaphragmMesh.position.y-=breathPhase*.045;
+}
+bloodParticles.forEach(p=>{
+ p.mesh.visible=bloodFlowToggle.checked&&active.has('circulatory');
+ if(p.mesh.visible){const u=(t*.18+p.offset)%1;p.mesh.position.copy(bloodCurves[p.path].getPointAt(u));}
+});
+if(duodenumMesh&&duodenumBase){
+ const wave=digestionToggle.checked?1+.055*Math.sin(t*3.2):1;
+ duodenumMesh.scale.copy(duodenumBase).multiplyScalar(wave);
+}
+kidneyBases.forEach(([mesh,base],i)=>{
+ const filter=kidneyToggle.checked?1+.035*Math.sin(t*2.4+i*Math.PI):1;
+ mesh.scale.copy(base).multiplyScalar(filter);
+});
+controls.update();renderer.render(scene,camera)
+}animate();
+const sysBox=document.getElementById('systems');systems.forEach(([id,ru,la,col])=>{const b=document.createElement('button');b.className='sys active';b.innerHTML=`<span class="dot" style="background:${col};color:${col}"></span><span><b>${ru}</b><small>${la}</small></span>`;b.onclick=()=>{active.has(id)?active.delete(id):active.add(id);b.classList.toggle('active');updateVisibility();renderCatalog()};sysBox.append(b)});
+function setLayerPreset(preset){const sets={all:['skin','organs','skeletal','muscular','circulatory','nervous','respiratory','digestive','urinary','reproductive','endocrine'],skin:['skin'],muscle:['muscular'],bone:['skeletal'],inside:['organs','circulatory','nervous','respiratory','digestive','urinary','reproductive','endocrine']};active=new Set(sets[preset]||sets.all);document.querySelectorAll('.layerTools [data-layer]').forEach(b=>b.classList.toggle('active',b.dataset.layer===preset));document.querySelectorAll('#systems .sys').forEach((b,i)=>b.classList.toggle('active',active.has(systems[i][0])));updateVisibility();renderCatalog();}
+
+document.querySelectorAll('#modelStudyModes [data-model-study]').forEach(b=>b.addEventListener('click',()=>{
+ const mode=b.dataset.modelStudy;
+ setLayerPreset(mode==='muscle'?'muscle':mode==='bone'?'bone':'all');
+ document.querySelectorAll('#modelStudyModes [data-model-study]').forEach(x=>x.classList.toggle('active',x===b));
+ studyMode=mode==='muscle'?'muscles':mode==='bone'?'bones':'all';
+ document.querySelectorAll('#studyFilters [data-study]').forEach(x=>x.classList.toggle('active',x.dataset.study===studyMode));
+ renderCatalog();
+}));
+document.querySelectorAll('.layerTools [data-layer]').forEach(b=>b.addEventListener('click',()=>setLayerPreset(b.dataset.layer)));
+let currentMuscleGroup='all',currentMuscleDepth='all';
+function updateVisibility(){model.children.forEach(o=>{if(o.userData?.system){const genderOK=!o.userData.gender||((o.userData.gender==='female')===female);const groupOK=o.userData.system!=='muscular'||((currentMuscleGroup==='all'||o.userData.muscleGroup===currentMuscleGroup)&&(currentMuscleDepth==='all'||o.userData.muscleDepth===currentMuscleDepth));o.visible=(o.userData.label?labelsToggle.checked:o.userData.flowMarker?flowToggle.checked:active.has(o.userData.system)&&genderOK&&groupOK&&!o.userData.individualHidden&&(!['skin','muscular','skeletal','organs'].includes(o.userData.system)||document.getElementById(({skin:'showSkinLayer',muscular:'showMuscleLayer',skeletal:'showBoneLayer',organs:'showOrganLayer'})[o.userData.system])?.checked!==false))}})}
+// v2.0: interactive layer separation and selective visibility.
+let layerSpreadAmount=0, skinGhostMode=false;
+const layerOriginals=new Map();
+model.children.forEach(o=>{
+ if(o.userData?.system){
+  layerOriginals.set(o,{x:o.position.x,y:o.position.y,z:o.position.z,material:o.material});
+ }
+});
+function applyLayerExplorer(){
+ const p=layerSpreadAmount/100;
+ const offsets={
+  skin:[0,0,.75*p],
+  muscular:[0,0,.42*p],
+  skeletal:[0,0,.12*p],
+  organs:[0,0,-.30*p],
+  circulatory:[0,0,-.40*p],
+  nervous:[0,0,-.22*p],
+  respiratory:[0,0,-.30*p],
+  digestive:[0,0,-.32*p],
+  urinary:[0,0,-.32*p],
+  reproductive:[0,0,-.32*p],
+  endocrine:[0,0,-.28*p]
+ };
+ model.children.forEach(o=>{
+  const base=layerOriginals.get(o);
+  if(!base)return;
+  const off=offsets[o.userData.system]||[0,0,0];
+  o.position.set(base.x+off[0],base.y+off[1],base.z+off[2]);
+ });
+ const v=document.getElementById('layerSpreadValue');
+ if(v)v.textContent=Math.round(layerSpreadAmount)+'%';
+}
+document.getElementById('layerSpread').addEventListener('input',e=>{
+ layerSpreadAmount=Number(e.target.value);applyLayerExplorer();
+});
+document.getElementById('layerReset').addEventListener('click',()=>{
+ layerSpreadAmount=0;document.getElementById('layerSpread').value='0';applyLayerExplorer();
+});
+document.getElementById('skinGhost').addEventListener('click',()=>{
+ skinGhostMode=!skinGhostMode;
+ document.getElementById('skinGhost').classList.toggle('active',skinGhostMode);
+ model.children.forEach(o=>{
+  if(o.userData?.system!=='skin'||!o.material)return;
+  const mats=Array.isArray(o.material)?o.material:[o.material];
+  mats.forEach(m=>{
+   m.transparent=skinGhostMode||m.opacity<1;
+   m.opacity=skinGhostMode?.16:1;
+   m.depthWrite=!skinGhostMode;
+   m.needsUpdate=true;
+  });
+ });
+});
+[
+ ['showSkinLayer','skin'],['showMuscleLayer','muscular'],
+ ['showBoneLayer','skeletal'],['showOrganLayer','organs']
+].forEach(([id,system])=>{
+ document.getElementById(id).addEventListener('change',e=>{
+  const checked=e.target.checked;
+  model.children.forEach(o=>{
+   if(o.userData?.system===system){
+    const genderOK=!o.userData.gender||((o.userData.gender==='female')===female);
+    o.visible=checked&&active.has(system)&&genderOK&&!o.userData.individualHidden;
+   }
+  });
+  const sysButton=[...document.querySelectorAll('#systems .sys')].find(b=>b.textContent.includes(systems.find(s=>s[0]===system)?.[1]||''));
+  if(sysButton)sysButton.classList.toggle('active',checked);
+ });
+});
+
+const extraInfo={
+'Atrium dextrum':['Правое предсердие','Принимает венозную кровь из верхней и нижней полых вен и направляет её через трёхстворчатый клапан в правый желудочек.'],
+'Atrium sinistrum':['Левое предсердие','Получает насыщенную кислородом кровь из лёгочных вен и направляет её через митральный клапан в левый желудочек.'],
+'Ventriculus dexter':['Правый желудочек сердца','Выбрасывает кровь через клапан лёгочного ствола в малый круг кровообращения.'],
+'Ventriculus sinister':['Левый желудочек сердца','Создаёт давление, необходимое для выброса крови через аортальный клапан в большой круг кровообращения.'],
+'Valva tricuspidalis':['Трёхстворчатый клапан','Предотвращает обратный ток крови из правого желудочка в правое предсердие.'],
+'Valva mitralis':['Митральный клапан','Предотвращает обратный ток крови из левого желудочка в левое предсердие.'],
+'Valva aortae':['Аортальный клапан','Обеспечивает однонаправленный ток крови из левого желудочка в аорту.'],
+'Valva trunci pulmonalis':['Клапан лёгочного ствола','Обеспечивает однонаправленный ток крови из правого желудочка в лёгочный ствол.'],
+'Cortex cerebri':['Кора больших полушарий','Наружный слой серого вещества больших полушарий; функциональные зоны распределены по разным областям коры.'],
+'Lobus frontalis':['Лобная доля','Связана с исполнительными функциями, произвольными движениями и рядом аспектов речевой деятельности.'],
+'Lobus parietalis':['Теменная доля','Участвует в обработке прикосновения, положения тела и пространственной информации.'],
+'Lobus temporalis':['Височная доля','Участвует в слуховой обработке, распознавании объектов и памяти.'],
+'Lobus occipitalis':['Затылочная доля','Основная область корковой обработки зрительной информации.'],
+'Cortex renalis':['Корковое вещество почки','Наружная часть почки, содержащая почечные тельца и извитые канальцы.'],
+'Medulla renalis':['Мозговое вещество почки','Внутренняя часть почки, содержащая почечные пирамиды и участвующая в концентрации мочи.'],
+'Lobus pulmonis superior':['Верхняя доля лёгкого','Схематически обозначает верхний отдел лёгкого; долевое строение справа и слева различается.'],
+'Lobus pulmonis inferior':['Нижняя доля лёгкого','Схематически обозначает нижний отдел лёгкого.'],
+'Clavicula':['Ключица','Соединяет грудину с лопаткой и поддерживает плечевой пояс.'],
+'Scapula':['Лопатка','Плоская кость плечевого пояса, служит местом прикрепления мышц.'],
+'Sternum':['Грудина','Плоская кость передней стенки грудной клетки.'],
+'Humerus':['Плечевая кость','Длинная кость верхней конечности между плечом и локтем.'],
+'Radius':['Лучевая кость','Кость предплечья со стороны большого пальца.'],
+'Ulna':['Локтевая кость','Кость предплечья со стороны мизинца.'],
+'Femur':['Бедренная кость','Крупная опорная кость между тазобедренным и коленным суставами.'],
+'Patella':['Надколенник','Защищает переднюю часть коленного сустава и участвует в разгибании ноги.'],
+'Tibia':['Большеберцовая кость','Основная опорная кость голени.'],
+'Fibula':['Малоберцовая кость','Тонкая кость голени, расположенная снаружи от большеберцовой.'],
+'Masseter':['Жевательная мышца','Поднимает нижнюю челюсть при жевании.'],
+'Trapezius':['Трапециевидная мышца','Двигает лопатку и участвует в движениях головы и шеи.'],
+'Latissimus dorsi':['Широчайшая мышца спины','Участвует в приведении и разгибании плеча.'],
+'Gluteus maximus':['Большая ягодичная мышца','Разгибает бедро и стабилизирует таз.'],
+'Gastrocnemius':['Икроножная мышца','Участвует в подошвенном сгибании стопы.'],
+'Soleus':['Камбаловидная мышца','Помогает удерживать вертикальное положение и сгибать стопу.'],
+'Arteria carotis communis':['Общая сонная артерия','Несёт кровь к структурам головы и шеи.'],
+'Arteria femoralis':['Бедренная артерия','Основная артерия, снабжающая кровью нижнюю конечность.'],
+'Vena jugularis':['Яремная вена','Отводит кровь от головы и шеи.'],
+'Nervus vagus':['Блуждающий нерв','Участвует в парасимпатической регуляции сердца, лёгких и органов пищеварения.'],
+'Nervus ischiadicus':['Седалищный нерв','Крупный нерв нижней конечности.'],
+'Diaphragma':['Диафрагма','Главная дыхательная мышца, разделяющая грудную и брюшную полости.'],
+'Duodenum':['Двенадцатиперстная кишка','Начальный отдел тонкой кишки.'],
+'Appendix vermiformis':['Червеобразный отросток','Узкий отросток слепой кишки.'],
+'Ureter':['Мочеточник','Проводит мочу из почки в мочевой пузырь.'],
+'Hypophysis':['Гипофиз','Эндокринная железа у основания головного мозга.']
+
+,'Lobus hepatis dexter':['Правая доля печени','Крупнейшая доля печени; участвует в обмене веществ, синтезе белков плазмы, образовании желчи и детоксикации.']
+,'Lobus hepatis sinister':['Левая доля печени','Левая анатомическая доля печени; функционально связана с общей печёночной тканью.']
+,'Vesica fellea':['Жёлчный пузырь','Накапливает и концентрирует желчь, которая поступает в двенадцатиперстную кишку.']
+,'Pelvis renalis':['Почечная лоханка','Собирает мочу из чашечек и направляет её в мочеточник.']
+,'Calyces renales':['Почечные чашечки','Собирают мочу из сосочков почечных пирамид и передают её в лоханку.']
+,'Arteria renalis':['Почечная артерия','Приносит артериальную кровь к почке; далее сосуд делится на сегментарные ветви.']
+,'Vena renalis':['Почечная вена','Отводит кровь от почки в нижнюю полую вену.']
+,'Arteria segmentalis renis':['Сегментарная артерия почки','Ветвь почечной артерии, снабжающая определённый сегмент почки.']
+,'Truncus pulmonalis':['Лёгочный ствол','Выносит венозную кровь из правого желудочка к лёгочным артериям.']
+,'Aorta ascendens':['Восходящая аорта','Начальный отдел аорты, отходящий от левого желудочка.']
+,'Arcus aortae':['Дуга аорты','От дуги отходят крупные артерии, снабжающие голову, шею и верхние конечности.']
+,'Aorta thoracica':['Грудная аорта','Часть нисходящей аорты, расположенная в грудной полости.']
+,'Aorta abdominalis':['Брюшная аорта','Продолжение грудной аорты в брюшной полости; отдаёт ветви к органам и стенкам живота.']
+,'Vena cava superior':['Верхняя полая вена','Возвращает венозную кровь от верхней половины тела в правое предсердие.']
+,'Vena cava inferior':['Нижняя полая вена','Возвращает венозную кровь от нижней половины тела в правое предсердие.']
+,'Venae pulmonales':['Лёгочные вены','Возвращают насыщенную кислородом кровь из лёгких в левое предсердие.']
+,'Arteria pulmonalis dextra':['Правая лёгочная артерия','Несёт венозную кровь от лёгочного ствола к правому лёгкому.']
+,'Arteria pulmonalis sinistra':['Левая лёгочная артерия','Несёт венозную кровь от лёгочного ствола к левому лёгкому.']
+,'Medulla spinalis':['Спинной мозг','Проводит нервные импульсы между головным мозгом и телом и участвует в рефлексах.']
+,'Truncus encephali':['Ствол головного мозга','Связывает головной и спинной мозг; содержит жизненно важные центры и проводящие пути.']
+,'Nervus medianus':['Срединный нерв','Участвует в чувствительной и двигательной иннервации части кисти и предплечья.']
+,'Nervus ulnaris':['Локтевой нерв','Иннервирует часть мышц кисти и обеспечивает чувствительность мизинца и части безымянного пальца.']
+,'Nervus femoralis':['Бедренный нерв','Обеспечивает двигательную иннервацию передней группы мышц бедра и чувствительность части ноги.']
+};
+
+Object.assign(extraInfo,{
+ 'Плечевой сустав — правая':['Правый плечевой сустав','Соединяет плечевую кость с лопаткой; обеспечивает широкий объём движений руки.'],
+ 'Плечевой сустав — левая':['Левый плечевой сустав','Соединяет плечевую кость с лопаткой; обеспечивает широкий объём движений руки.'],
+ 'Локтевой сустав — правая':['Правый локтевой сустав','Обеспечивает сгибание и разгибание предплечья.'],
+ 'Локтевой сустав — левая':['Левый локтевой сустав','Обеспечивает сгибание и разгибание предплечья.'],
+ 'Лучезапястный сустав — правая':['Правый лучезапястный сустав','Соединяет предплечье с кистью и участвует в движениях запястья.'],
+ 'Лучезапястный сустав — левая':['Левый лучезапястный сустав','Соединяет предплечье с кистью и участвует в движениях запястья.'],
+ 'Тазобедренный сустав — правая':['Правый тазобедренный сустав','Соединяет бедренную кость с тазовой и несёт значительную часть массы тела.'],
+ 'Тазобедренный сустав — левая':['Левый тазобедренный сустав','Соединяет бедренную кость с тазовой и несёт значительную часть массы тела.'],
+ 'Коленный сустав — правая':['Правый коленный сустав','Обеспечивает сгибание и разгибание ноги и участвует в опоре тела.'],
+ 'Коленный сустав — левая':['Левый коленный сустав','Обеспечивает сгибание и разгибание ноги и участвует в опоре тела.'],
+ 'Голеностопный сустав — правая':['Правый голеностопный сустав','Соединяет голень со стопой и помогает удерживать равновесие.'],
+ 'Голеностопный сустав — левая':['Левый голеностопный сустав','Соединяет голень со стопой и помогает удерживать равновесие.']
+});
+
+
+Object.assign(extraInfo,{
+ 'Дельтовидная мышца — правая':['Правая дельтовидная мышца','Покрывает плечевой сустав и участвует в отведении и других движениях плеча.'],
+ 'Дельтовидная мышца — левая':['Левая дельтовидная мышца','Покрывает плечевой сустав и участвует в отведении и других движениях плеча.'],
+ 'Большая грудная мышца — правая':['Правая большая грудная мышца','Участвует в приведении, сгибании и вращении плеча.'],
+ 'Большая грудная мышца — левая':['Левая большая грудная мышца','Участвует в приведении, сгибании и вращении плеча.'],
+ 'Двуглавая мышца плеча — правая':['Правая двуглавая мышца плеча','Сгибает локтевой сустав и участвует в повороте предплечья ладонью вверх.'],
+ 'Двуглавая мышца плеча — левая':['Левая двуглавая мышца плеча','Сгибает локтевой сустав и участвует в повороте предплечья ладонью вверх.'],
+ 'Трёхглавая мышца плеча — правая':['Правая трёхглавая мышца плеча','Основная функция — разгибание предплечья в локтевом суставе.'],
+ 'Трёхглавая мышца плеча — левая':['Левая трёхглавая мышца плеча','Основная функция — разгибание предплечья в локтевом суставе.'],
+ 'Прямая мышца живота — правая':['Правая прямая мышца живота','Сгибает туловище и помогает стабилизировать переднюю брюшную стенку.'],
+ 'Прямая мышца живота — левая':['Левая прямая мышца живота','Сгибает туловище и помогает стабилизировать переднюю брюшную стенку.'],
+ 'Наружная косая мышца живота — правая':['Правая наружная косая мышца живота','Участвует в повороте и боковом наклоне туловища.'],
+ 'Наружная косая мышца живота — левая':['Левая наружная косая мышца живота','Участвует в повороте и боковом наклоне туловища.'],
+ 'Большая ягодичная мышца — правая':['Правая большая ягодичная мышца','Разгибает бедро и помогает удерживать вертикальное положение тела.'],
+ 'Большая ягодичная мышца — левая':['Левая большая ягодичная мышца','Разгибает бедро и помогает удерживать вертикальное положение тела.'],
+ 'Четырёхглавая мышца бедра — правая':['Правая четырёхглавая мышца бедра','Разгибает голень в коленном суставе.'],
+ 'Четырёхглавая мышца бедра — левая':['Левая четырёхглавая мышца бедра','Разгибает голень в коленном суставе.'],
+ 'Икроножная мышца — правая':['Правая икроножная мышца','Участвует в подошвенном сгибании стопы и сгибании колена.'],
+ 'Икроножная мышца — левая':['Левая икроножная мышца','Участвует в подошвенном сгибании стопы и сгибании колена.']
+});
+
+let studyMode='all';
+function choose(o){
+ selected=o;
+ const d=organs.find(x=>x[0]===o)||boneAtlas.find(x=>x[0]===o);
+ const muscle=muscleCatalogData.find(x=>x[0]+' — правая'===o||x[0]+' — левая'===o);
+ let title=o,latin=o,desc='Схематическая анатомическая структура. Геометрия учебная.';
+ if(d){title=d[1];latin=d[0];desc=d[3];}
+ else if(muscle){title=muscle[0];latin=muscle[1];desc='Расположение: '+muscle[4]+' Функция: '+muscle[5];}
+ else if(extraInfo[o]){title=extraInfo[o][0];desc=extraInfo[o][1];}
+ document.getElementById('detail').innerHTML=`<h3>${title}</h3><div class="latin">${latin}</div><p>${desc}</p>`;
+ const f=document.getElementById('floatInfo');f.style.display='block';f.innerHTML=`<strong>${title}</strong><span>${latin}</span>`;
+ renderCatalog();if(muscle)showMuscleCard(muscle);
+}
+function renderCatalog(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const base=organs.filter(o=>(active.has(o[2])||q)&&((o[0]+' '+o[1]+' '+o[3]).toLowerCase().includes(q))&&(q||active.has(o[2])));
+ const known=new Set(base.map(o=>o[0]));
+ const extras=Object.entries(selectable).filter(([name,obj])=>!known.has(name)&&obj.userData?.system&&(active.has(obj.userData.system)||q)&&((name+' '+(extraInfo[name]?.[0]||'')).toLowerCase().includes(q))).map(([name,obj])=>[name,extraInfo[name]?.[0]||name,obj.userData.system,extraInfo[name]?.[1]||'Схематическая структура в 3D-модели.']);
+ const boneRows=boneAtlas.filter(o=>(active.has('skeletal')||q)&&((o[0]+' '+o[1]+' '+o[3]).toLowerCase().includes(q))&&(q||active.has('skeletal')));
+ let rows=base.concat(extras,boneRows);
+ if(studyMode==='muscles')rows=muscleCatalogData.map(x=>[x[0]+' — правая',x[0]+' — правая','muscular',x[5]]).filter(x=>(x[1]+' '+x[3]).toLowerCase().includes(q));
+ if(studyMode==='bones')rows=boneRows;
+ document.getElementById('count').textContent=rows.length+' позиций';
+ const cat=document.getElementById('catalog');cat.innerHTML='';
+ rows.forEach(o=>{const div=document.createElement('div');div.className='organ'+(selected===o[0]?' selectedRow':'');div.innerHTML=`<div><b>${o[1]}</b><small>Латинский термин: ${o[0]}</small></div><button>Открыть</button>`;div.onclick=()=>choose(o[0]);cat.append(div)});
+ if(!rows.length)cat.innerHTML='<div class="empty">Ничего не найдено</div>';
+}
+document.getElementById('search').addEventListener('input',renderCatalog);
+document.querySelectorAll('#studyFilters [data-study]').forEach(b=>b.addEventListener('click',()=>{
+ studyMode=b.dataset.study;document.querySelectorAll('#studyFilters [data-study]').forEach(x=>x.classList.toggle('active',x===b));
+ setLayerPreset(studyMode==='muscles'?'muscle':studyMode==='bones'?'bone':'all');renderCatalog();
+}));
+document.querySelectorAll('#modelStudyModes [data-model-study]').forEach(b=>b.addEventListener('click',()=>{
+ const mode=b.dataset.modelStudy;studyMode=mode==='muscle'?'muscles':mode==='bone'?'bones':'all';
+ document.querySelectorAll('#modelStudyModes [data-model-study]').forEach(x=>x.classList.toggle('active',x===b));
+ document.querySelectorAll('#studyFilters [data-study]').forEach(x=>x.classList.toggle('active',x.dataset.study===studyMode));
+ setLayerPreset(mode==='muscle'?'muscle':mode==='bone'?'bone':'all');renderCatalog();
+}));
+renderCatalog();
+
+function showMuscleCard(m){const [ru,la,group,depth,location,fn]=m;document.getElementById('muscleCard').innerHTML=`<h3>${ru}</h3><div class="latin">${la}</div><p><b>Расположение:</b> ${location}</p><p><b>Функция:</b> ${fn}</p><p><b>Слой:</b> ${depth==='deep'?'глубокий':'поверхностный'}</p>`;}
+function renderMuscleLab(){const q=document.getElementById('muscleSearch').value.toLowerCase();const list=muscleCatalogData.filter(m=>(currentMuscleGroup==='all'||m[2]===currentMuscleGroup)&&(currentMuscleDepth==='all'||m[3]===currentMuscleDepth)&&(m[0]+' '+m[1]+' '+m[4]+' '+m[5]).toLowerCase().includes(q));const box=document.getElementById('muscleCatalog');box.innerHTML='';document.getElementById('muscleCount').textContent=list.length+' мышц';
+ list.forEach(m=>{const row=document.createElement('div');row.className='organ';const title=document.createElement('div');title.innerHTML=`<b>${m[0]}</b><small>${m[1]} · ${m[3]==='deep'?'глубокая':'поверхностная'}</small>`;const controls=document.createElement('div');controls.style.display='flex';controls.style.alignItems='center';controls.style.gap='8px';const cb=document.createElement('input');cb.type='checkbox';cb.checked=[1,-1].some(s=>{const key=m[0]+' — '+(s===1?'правая':'левая');return muscleMeshByName[key]&&!muscleMeshByName[key].userData.individualHidden});cb.title='Показать или скрыть эту мышцу';cb.onchange=()=>{for(const side of ['правая','левая']){const mesh=muscleMeshByName[m[0]+' — '+side];if(mesh){mesh.userData.individualHidden=!cb.checked;}}updateVisibility();};const open=document.createElement('button');open.textContent='Карточка';open.onclick=()=>{showMuscleCard(m);choose(m[0]+' — правая')};controls.append(cb,open);row.append(title,controls);box.append(row);});if(!list.length)box.innerHTML='<div class="empty">Мышцы не найдены</div>';
+}
+document.querySelectorAll('#muscleGroups [data-group]').forEach(b=>b.addEventListener('click',()=>{currentMuscleGroup=b.dataset.group;document.querySelectorAll('#muscleGroups [data-group]').forEach(x=>x.classList.toggle('active',x===b));updateVisibility();renderMuscleLab()}));
+document.querySelectorAll('#muscleDepth [data-depth]').forEach(b=>b.addEventListener('click',()=>{currentMuscleDepth=b.dataset.depth;document.querySelectorAll('#muscleDepth [data-depth]').forEach(x=>x.classList.toggle('active',x===b));updateVisibility();renderMuscleLab()}));
+document.getElementById('muscleSearch').addEventListener('input',renderMuscleLab);renderMuscleLab();
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();renderer.domElement.addEventListener('pointerup',e=>{const r=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(model.children.filter(o=>o.visible),false)[0];if(hit?.object.userData.name)choose(hit.object.userData.name)});
+document.getElementById('reset').onclick=()=>{camera.position.set(0,-.15,10.2);controls.target.set(0,.1,0);controls.update()};document.getElementById('zoomIn').onclick=()=>{camera.position.multiplyScalar(.88)};document.getElementById('zoomOut').onclick=()=>{camera.position.multiplyScalar(1.12)};document.getElementById('male').onclick=()=>{female=false;document.getElementById('male').classList.add('active');document.getElementById('female').classList.remove('active');applyGender();renderCatalog()};document.getElementById('female').onclick=()=>{female=true;document.getElementById('female').classList.add('active');document.getElementById('male').classList.remove('active');applyGender();renderCatalog();document.getElementById('detail').innerHTML='<h3>Женская репродуктивная система</h3><div class="latin">Systema genitale femininum</div><p>Показаны схематические матка, яичники и маточные трубы. Остальная геометрия тела в этой версии остаётся общей.</p>'};document.getElementById('front').onclick=()=>{camera.position.set(0,-.15,10.2);controls.update()};document.getElementById('back').onclick=()=>{camera.position.set(0,-.15,-10.2);controls.update()};
+
+// Проверка знаний: режим мышц, костей или смешанный.
+const muscleQuizPool=muscleCatalogData.map(m=>[m[1],m[0],'muscular',m[4]+' '+m[5]]);const quizPool=muscleQuizPool.concat(boneAtlas).filter(x=>x[1]&&x[3]);
+let quizDeck=[],quizIndex=0,quizCorrect=0,quizAnswered=false;
+const qQuestion=document.getElementById('quizQuestion'),qAnswers=document.getElementById('quizAnswers'),qFeedback=document.getElementById('quizFeedback'),qProgress=document.getElementById('quizProgress'),qScore=document.getElementById('quizScore'),qNext=document.getElementById('quizNext');
+const quizMode=document.createElement('div');quizMode.className='toolbar';quizMode.innerHTML='<button class="tab active" data-quiz="mixed">Мышцы + кости</button><button class="tab" data-quiz="muscles">Только мышцы</button><button class="tab" data-quiz="bones">Только кости</button>';document.getElementById('quizPanel').insertBefore(quizMode,qProgress);
+let selectedQuizMode='mixed';quizMode.querySelectorAll('[data-quiz]').forEach(b=>b.onclick=()=>{selectedQuizMode=b.dataset.quiz;quizMode.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));});
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function startQuiz(){let pool=selectedQuizMode==='muscles'?muscleQuizPool:selectedQuizMode==='bones'?boneAtlas:quizPool;quizDeck=shuffle(pool).slice(0,Math.min(10,pool.length));quizIndex=0;quizCorrect=0;showQuizQuestion();}
+function showQuizQuestion(){if(quizIndex>=quizDeck.length){qQuestion.textContent='Тест завершён!';qAnswers.innerHTML='';qFeedback.textContent='Результат: '+quizCorrect+' из '+quizDeck.length+' правильных ответов.';qProgress.textContent='Все вопросы пройдены';qNext.disabled=true;qNext.textContent='Готово';return;}
+ const item=quizDeck[quizIndex];qProgress.textContent='Вопрос '+(quizIndex+1)+' из '+quizDeck.length;qQuestion.textContent=item[3]||'Выбери правильное русское название.';const pool=selectedQuizMode==='muscles'?muscleQuizPool:selectedQuizMode==='bones'?boneAtlas:quizPool;const wrong=shuffle(pool.filter(x=>x[0]!==item[0])).slice(0,3).map(x=>x[1]);const opts=shuffle([item[1],...wrong]);qAnswers.innerHTML='';let answered=false;
+ opts.forEach(answer=>{const b=document.createElement('button');b.className='tab';b.textContent=answer;b.style.textAlign='left';b.onclick=()=>{if(answered)return;answered=true;const ok=answer===item[1];if(ok){quizCorrect++;qFeedback.textContent='Верно! '+item[1];qFeedback.style.color='#63d7a4';}else{qFeedback.textContent='Неверно. Правильный ответ: '+item[1];qFeedback.style.color='#f08b91';} [...qAnswers.children].forEach(x=>{if(x.textContent===item[1]){x.style.borderColor='#37c98b';x.style.background='rgba(55,201,139,.16)';}else if(x===b){x.style.borderColor='#f07178';}});qScore.textContent='Правильных ответов: '+quizCorrect+' из '+(quizIndex+1);qNext.disabled=false;};qAnswers.append(b);});qFeedback.textContent='Выбери один вариант ответа.';qFeedback.style.color='#9fb3c9';qNext.disabled=true;qNext.textContent=quizIndex===quizDeck.length-1?'Результат':'Следующий вопрос';}
+document.getElementById('quizStart').addEventListener('click',startQuiz);qNext.addEventListener('click',()=>{quizIndex++;showQuizQuestion();});
+</script></body></html>
