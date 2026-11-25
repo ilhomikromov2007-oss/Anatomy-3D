@@ -471,6 +471,77 @@ function setSection(enabled,value){sectionPlane.constant=Number(value);model.tra
 const cutToggle=document.getElementById('cutToggle'),cutSlider=document.getElementById('cutSlider');
 cutToggle.addEventListener('change',()=>setSection(cutToggle.checked,cutSlider.value));
 cutSlider.addEventListener('input',()=>{if(cutToggle.checked)setSection(true,cutSlider.value)});
+
+// v2.1 visual rebuild: smoother anatomical silhouette and muscle volumes.
+// Retain the existing selectable systems/catalog while replacing bead-like legacy shapes.
+const legacyMuscles=model.children.filter(o=>o.userData?.system==='muscular');
+legacyMuscles.forEach(o=>o.visible=false);
+['Body silhouette','Head silhouette','Pelvis silhouette','Cranium'].forEach(n=>{if(selectable[n])selectable[n].visible=false;});
+const skinShell=mat(0x9fb4c5,.72,.86);
+const shellMat=mat(0x8f9fb1,.72,.78);
+function smoothForm(name,a,b,width,depth,material,system='muscular',group='arms',layer='superficial'){
+ const p1=new THREE.Vector3(...a),p2=new THREE.Vector3(...b),mid=p1.clone().add(p2).multiplyScalar(.5);
+ const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),material);
+ mesh.position.copy(mid);mesh.scale.set(width,p1.distanceTo(p2)*.68,depth);
+ mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),p2.clone().sub(p1).normalize());
+ mesh.userData={name,system,muscleGroup:group,muscleDepth:layer,individualHidden:false};
+ model.add(mesh);selectable[name]=mesh;
+ if(system==='muscular')muscleMeshByName[name]=mesh;
+ return mesh;
+}
+function bodyLoft(){
+ const rings=[
+  [2.02,.34,.25],[1.78,.70,.34],[1.52,.76,.36],[1.20,.62,.31],
+  [.82,.48,.27],[.38,.43,.25],[.02,.48,.28],[-.36,.60,.31],
+  [-.78,.66,.32],[-1.18,.72,.34],[-1.48,.58,.30]
+ ];
+ const verts=[],idx=[],seg=48;
+ for(const [y,rx,rz] of rings){
+  for(let i=0;i<seg;i++){const t=i/seg*Math.PI*2;verts.push(Math.cos(t)*rx,y,Math.sin(t)*rz);}
+ }
+ for(let j=0;j<rings.length-1;j++)for(let i=0;i<seg;i++){
+  const a=j*seg+i,b=j*seg+(i+1)%seg,c=(j+1)*seg+(i+1)%seg,d=(j+1)*seg+i;
+  idx.push(a,b,d,b,c,d);
+ }
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setIndex(idx);g.computeVertexNormals();
+ const mesh=new THREE.Mesh(g,skinShell);mesh.userData={name:'Torso silhouette',system:'skin'};model.add(mesh);selectable['Torso silhouette']=mesh;
+}
+bodyLoft();
+function capsuleSkin(name,a,b,r,rz=r){
+ const mesh=smoothForm(name,a,b,r,rz,skinShell,'skin','skin','surface');
+ mesh.userData.system='skin';return mesh;
+}
+capsuleSkin('Шея',[0,2.12,0],[0,1.78,0],.19,.18);
+capsuleSkin('Голова — череп',[0,2.93,0],[0,2.48,0],.39,.34);
+const jaw=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),shellMat);jaw.position.set(0,2.43,.035);jaw.scale.set(.27,.20,.27);jaw.userData={name:'Нижняя челюсть',system:'skin'};model.add(jaw);
+for(const s of [-1,1]){
+ capsuleSkin('Плечо — '+s,[s*.67,1.62,0],[s*.88,1.03,0],.19,.18);
+ capsuleSkin('Предплечье — '+s,[s*.88,1.00,0],[s*1.00,.18,0],.125,.12);
+ capsuleSkin('Бедро — '+s,[s*.36,-1.48,0],[s*.47,-2.55,0],.25,.23);
+ capsuleSkin('Голень — '+s,[s*.47,-2.60,0],[s*.53,-3.40,0],.145,.14);
+}
+const mSurf=mat(0xb95768,.5,.02),mDeep=mat(0x873e52,.52,.02);
+for(const s of [-1,1]){
+ const side=s===1?'правая':'левая';
+ smoothForm('Большая грудная мышца — '+side,[s*.12,1.48,.36],[s*.62,1.20,.35],.23,.105,mSurf,'muscular','chest');
+ smoothForm('Дельтовидная мышца — '+side,[s*.62,1.76,.18],[s*.84,1.38,.22],.20,.18,mSurf,'muscular','arms');
+ smoothForm('Двуглавая мышца плеча — '+side,[s*.78,1.36,.20],[s*.89,.86,.20],.115,.10,mSurf,'muscular','arms');
+ smoothForm('Трёхглавая мышца плеча — '+side,[s*.79,1.36,-.13],[s*.90,.86,-.12],.105,.09,mDeep,'muscular','arms','deep');
+ smoothForm('Четырёхглавая мышца бедра — '+side,[s*.34,-1.72,.20],[s*.46,-2.55,.18],.17,.13,mSurf,'muscular','legs');
+ smoothForm('Задняя группа мышц бедра — '+side,[s*.35,-1.75,-.15],[s*.47,-2.55,-.14],.14,.11,mDeep,'muscular','legs','deep');
+ smoothForm('Икроножная мышца — '+side,[s*.48,-2.72,-.10],[s*.53,-3.28,-.10],.13,.12,mSurf,'muscular','legs');
+ smoothForm('Передняя большеберцовая мышца — '+side,[s*.49,-2.72,.12],[s*.53,-3.34,.10],.075,.07,mSurf,'muscular','legs');
+ smoothForm('Большая ягодичная мышца — '+side,[s*.18,-1.47,-.16],[s*.52,-1.78,-.16],.20,.12,mSurf,'muscular','legs');
+ smoothForm('Прямая мышца живота — '+side,[s*.10,.82,.28],[s*.10,.10,.28],.085,.075,mSurf,'muscular','abdomen');
+ smoothForm('Наружная косая мышца живота — '+side,[s*.34,.72,.18],[s*.28,.08,.20],.105,.07,mSurf,'muscular','abdomen');
+}
+// Reduce oversized organ volumes and make the skin shell less visually dominant.
+for(const [name,obj] of Object.entries(selectable)){
+ if(!obj?.isMesh||obj.userData?.system==='muscular'||obj.userData?.system==='skin')continue;
+ if(['Cerebrum','Lobus frontalis','Lobus parietalis','Lobus temporalis','Lobus occipitalis','Cortex cerebri'].includes(name))continue;
+ if(['Cor','Pulmo dexter','Pulmo sinister','Hepar','Ventriculus','Intestinum tenue','Ren dexter','Ren sinister','Pancreas'].includes(name))obj.scale.multiplyScalar(.82);
+}
+
 let active=new Set(['skin','organs','skeletal','muscular','circulatory','nervous','respiratory','digestive','urinary','reproductive','endocrine']);let selected=null;let female=false;function applyGender(){model.children.forEach(o=>{if(o.userData?.gender)o.visible=(o.userData.gender==='female')===female && active.has(o.userData.system)});document.querySelector('.viewtag').textContent='3D · '+(female?'ЖЕНСКАЯ':'МУЖСКАЯ')+' МОДЕЛЬ · ОБЗОР'}applyGender();
 const labelsToggle=document.getElementById('labelsToggle'),flowToggle=document.getElementById('flowToggle');
 labelsToggle.addEventListener('change',()=>labelObjects.forEach(o=>o.visible=labelsToggle.checked));
